@@ -1,18 +1,39 @@
 import React from 'react';
 import { IoPersonOutline, IoReceiptOutline, IoBookmarkOutline } from 'react-icons/io5';
+import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
+  const { user } = useAuth();
+
+  // Get user display name or email prefix
+  const getDisplayName = () => {
+    if (!user) return 'Premium Member';
+    if (user.user_metadata?.name) return user.user_metadata.name;
+    if (user.email) return user.email.split('@')[0];
+    return 'Premium Member';
+  };
+
+  // Get user registration date or simulated date
+  const getJoinedDate = () => {
+    if (!user) return 'May 2026';
+    if (user.created_at) {
+      const date = new Date(user.created_at);
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    }
+    return 'May 2026';
+  };
+
   return (
     <div className="py-24 px-6 max-w-7xl mx-auto min-h-screen">
       {/* Profile summary banner */}
       <div className="card-glass p-8 rounded-2xl mb-12 flex flex-col md:flex-row gap-6 items-center justify-between">
         <div className="flex items-center gap-6">
-          <div className="w-20 h-20 bg-blue-500/10 border border-blue-500/20 text-blue-400 rounded-full flex items-center justify-center">
-            <IoPersonOutline className="text-4xl" />
+          <div className="w-20 h-20 bg-gradient-to-tr from-accent-cyan to-accent-purple text-slate-950 rounded-full flex items-center justify-center font-bold text-2xl uppercase shadow-lg shadow-accent-cyan/15">
+            {getDisplayName().slice(0, 2)}
           </div>
           <div>
-            <h1 className="text-3xl font-extrabold mb-1">Jane Doe</h1>
-            <p className="text-text-muted">Customer since May 2026 • Premium Elite Tier</p>
+            <h1 className="text-3xl font-extrabold mb-1">{getDisplayName()}</h1>
+            <p className="text-text-muted">Customer since {getJoinedDate()} • Premium Elite Tier</p>
           </div>
         </div>
         <div className="flex gap-4">

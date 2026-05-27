@@ -13,6 +13,9 @@ import Booking from '../pages/Booking';
 import Dashboard from '../pages/Dashboard';
 import Auth from '../pages/Auth';
 
+// Security Wrappers
+import ProtectedRoute from '../components/common/ProtectedRoute';
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -32,11 +35,19 @@ export const router = createBrowserRouter([
       },
       {
         path: 'booking',
-        element: <Booking />,
+        element: (
+          <ProtectedRoute>
+            <Booking />
+          </ProtectedRoute>
+        ),
       },
       {
         path: 'dashboard',
-        element: <Dashboard />,
+        element: (
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
       },
     ],
   },
