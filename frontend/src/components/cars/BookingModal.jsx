@@ -260,7 +260,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                             min={todayStr}
                             disabled={isSubmitting}
                             required
-                            className="w-full bg-slate-950/60 border border-white/5 rounded-xl px-4 py-3 outline-none text-white focus:border-accent-cyan transition-all text-sm font-sans"
+                            className="w-full bg-slate-950/60 border border-white/10 rounded-xl px-4 py-3.5 outline-none text-white focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 transition-all duration-300 text-sm font-sans cursor-pointer"
                           />
                         </div>
                         <div>
@@ -272,7 +272,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                             min={pickupDate || todayStr}
                             disabled={isSubmitting || !pickupDate}
                             required
-                            className="w-full bg-slate-950/60 border border-white/5 rounded-xl px-4 py-3 outline-none text-white focus:border-accent-cyan transition-all text-sm font-sans"
+                            className="w-full bg-slate-950/60 border border-white/10 rounded-xl px-4 py-3.5 outline-none text-white focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 transition-all duration-300 text-sm font-sans cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           />
                         </div>
                       </div>
@@ -283,7 +283,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                     {/* Payment details */}
                     <div>
                       <h4 className="text-sm font-bold uppercase tracking-wider text-accent-purple mb-4 flex items-center gap-2">
-                        <IoCardOutline />
+                        <IoCardOutline className="text-base text-accent-purple" />
                         <span>Payment Security</span>
                       </h4>
                       <div className="flex flex-col gap-4">
@@ -296,7 +296,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                             placeholder="Full Name as displayed on card"
                             disabled={isSubmitting}
                             required
-                            className="w-full bg-slate-950/60 border border-white/5 rounded-xl px-4 py-3 outline-none text-white focus:border-accent-cyan transition-all text-sm"
+                            className="w-full bg-slate-950/60 border border-white/10 rounded-xl px-4 py-3.5 outline-none text-white focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 transition-all duration-300 text-sm"
                           />
                         </div>
                         <div>
@@ -312,7 +312,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                             placeholder="0000 0000 0000 0000"
                             disabled={isSubmitting}
                             required
-                            className="w-full bg-slate-950/60 border border-white/5 rounded-xl px-4 py-3 outline-none text-white focus:border-accent-cyan transition-all text-sm font-sans"
+                            className="w-full bg-slate-950/60 border border-white/10 rounded-xl px-4 py-3.5 outline-none text-white focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 transition-all duration-300 text-sm font-sans"
                           />
                         </div>
                       </div>

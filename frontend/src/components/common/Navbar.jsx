@@ -73,8 +73,8 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `text-sm font-semibold tracking-wide transition-colors duration-300 hover:text-accent-cyan ${
-                  isActive ? 'text-accent-cyan' : 'text-text-muted'
+                `text-sm font-semibold tracking-wide transition-all duration-300 hover:text-accent-cyan relative py-2 ${
+                  isActive ? 'text-accent-cyan after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-accent-cyan after:rounded-full' : 'text-text-muted'
                 }`
               }
             >
@@ -90,9 +90,9 @@ export default function Navbar() {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center gap-2 text-white hover:text-accent-cyan transition-colors duration-300 cursor-pointer py-1.5 px-3 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10"
+                className="flex items-center gap-2.5 text-white hover:text-accent-cyan transition-all duration-300 cursor-pointer py-2.5 px-4 rounded-xl border border-white/5 bg-white/5 hover:bg-white/10 hover:border-white/10 select-none"
               >
-                <div className="w-6 h-6 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple text-slate-950 flex items-center justify-center font-bold text-[10px] uppercase">
+                <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple text-slate-950 flex items-center justify-center font-bold text-[11px] uppercase shadow-inner">
                   {getDisplayName().slice(0, 2)}
                 </div>
                 <span className="text-sm font-semibold tracking-wide truncate max-w-[120px]">
@@ -104,10 +104,10 @@ export default function Navbar() {
               <AnimatePresence>
                 {showDropdown && (
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 10 }}
-                    transition={{ duration: 0.2 }}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    transition={{ duration: 0.2, ease: "easeOut" }}
                     className="absolute right-0 mt-3 w-56 card-glass rounded-2xl border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
                   >
                     <div className="px-4 py-3 border-b border-white/5 mb-2">
@@ -157,7 +157,7 @@ export default function Navbar() {
             </div>
           ) : (
             /* Unauthenticated Account Trigger */
-            <Link to="/auth" className="flex items-center gap-2 text-text-muted hover:text-white transition-colors duration-300">
+            <Link to="/auth" className="flex items-center gap-2 text-text-muted hover:text-white transition-colors duration-300 py-2.5 px-3">
               <IoPersonOutline className="text-xl" />
               <span className="text-sm font-semibold">Account</span>
             </Link>
@@ -171,7 +171,7 @@ export default function Navbar() {
         {/* Mobile Toggle Menu */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden text-3xl text-text-muted hover:text-white focus:outline-none"
+          className="md:hidden w-11 h-11 flex items-center justify-center rounded-xl border border-white/5 bg-white/5 text-2xl text-text-muted hover:text-white focus:outline-none transition-colors duration-300 cursor-pointer"
         >
           {isOpen ? <IoCloseOutline /> : <IoMenuOutline />}
         </button>
@@ -184,79 +184,86 @@ export default function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            className="md:hidden bg-bg-surface/95 border-b border-border-light overflow-hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="md:hidden bg-slate-950/98 border-b border-border-light overflow-hidden shadow-2xl"
           >
-            <div className="px-6 py-8 flex flex-col gap-6">
-              {links.map((link) => (
-                <NavLink
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsOpen(false)}
-                  className={({ isActive }) =>
-                    `text-lg font-bold tracking-wide transition-colors ${
-                      isActive ? 'text-accent-cyan' : 'text-text-muted'
-                    }`
-                  }
-                >
-                  {link.name}
-                </NavLink>
-              ))}
-              <hr className="border-border-light" />
+            <div className="px-6 py-6 flex flex-col gap-5">
+              <div className="flex flex-col gap-1">
+                {links.map((link) => (
+                  <NavLink
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsOpen(false)}
+                    className={({ isActive }) =>
+                      `text-base font-bold tracking-wide transition-all py-3 px-4 rounded-xl flex items-center ${
+                        isActive 
+                          ? 'bg-blue-500/10 text-accent-cyan' 
+                          : 'text-text-muted hover:bg-white/5 hover:text-white'
+                      }`
+                    }
+                  >
+                    {link.name}
+                  </NavLink>
+                ))}
+              </div>
+              <hr className="border-white/5" />
               
               <div className="flex flex-col gap-4">
                 {user ? (
                   <>
-                    <div className="flex items-center gap-3 py-2 border-b border-white/5 pb-4">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple text-slate-950 flex items-center justify-center font-bold text-sm uppercase">
+                    <div className="flex items-center gap-3 py-1 px-4">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-accent-cyan to-accent-purple text-slate-950 flex items-center justify-center font-bold text-sm uppercase shadow-md shadow-accent-cyan/15">
                         {getDisplayName().slice(0, 2)}
                       </div>
                       <div>
                         <h4 className="font-bold text-white text-sm">{getDisplayName()}</h4>
-                        <span className="text-xs text-text-muted truncate block max-w-[200px]">{user.email}</span>
+                        <span className="text-xs text-text-muted truncate block max-w-[200px] font-sans">{user.email}</span>
                       </div>
                     </div>
 
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 text-text-muted hover:text-white py-2 font-semibold text-sm"
-                    >
-                      <IoPersonOutline className="text-xl text-accent-cyan" />
-                      <span>User Profile</span>
-                    </Link>
+                    <div className="grid grid-cols-2 gap-2 mt-2">
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs"
+                      >
+                        <IoPersonOutline className="text-base text-accent-cyan" />
+                        <span>Profile</span>
+                      </Link>
 
-                    <Link
-                      to="/admin"
-                      onClick={() => setIsOpen(false)}
-                      className="flex items-center gap-3 text-text-muted hover:text-white py-2 font-semibold text-sm"
-                    >
-                      <IoSettingsOutline className="text-xl text-accent-coral" />
-                      <span>Admin Console</span>
-                    </Link>
+                      <Link
+                        to="/admin"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs"
+                      >
+                        <IoSettingsOutline className="text-base text-accent-coral" />
+                        <span>Admin</span>
+                      </Link>
+                    </div>
 
                     <button
                       onClick={handleLogout}
-                      className="flex items-center gap-3 text-red-400 hover:text-red-300 py-2 font-semibold text-sm text-left bg-transparent border-none cursor-pointer"
+                      className="flex items-center justify-center gap-2 text-red-400 hover:text-red-300 bg-red-500/5 border border-red-500/10 py-3 rounded-xl font-bold text-xs cursor-pointer mt-1"
                     >
-                      <IoLogOutOutline className="text-xl" />
-                      <span>Log Out</span>
+                      <IoLogOutOutline className="text-base" />
+                      <span>Log Out Account</span>
                     </button>
                   </>
                 ) : (
                   <Link
                     to="/auth"
                     onClick={() => setIsOpen(false)}
-                    className="flex items-center gap-2 justify-center text-text-muted hover:text-white py-2"
+                    className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3.5 rounded-xl text-sm font-bold"
                   >
-                    <IoPersonOutline className="text-xl" />
-                    <span>Profile Account</span>
+                    <IoPersonOutline className="text-lg" />
+                    <span>Access Account</span>
                   </Link>
                 )}
 
                 <Link
                   to="/cars"
                   onClick={() => setIsOpen(false)}
-                  className="btn-premium btn-premium-hover text-center py-3 rounded-xl font-bold"
+                  className="btn-premium btn-premium-hover text-center py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-accent-cyan/15 mt-2"
                 >
                   Reserve Car
                 </Link>

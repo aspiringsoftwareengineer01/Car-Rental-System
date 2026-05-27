@@ -124,18 +124,18 @@ export default function Cars() {
       </div>
 
       {/* Search & Filtration Panels */}
-      <div className="card-glass p-8 rounded-[2rem] border border-white/5 mb-16 relative z-10 flex flex-col gap-6">
+      <div className="card-glass p-6 md:p-8 rounded-[2rem] border border-white/5 mb-16 relative z-10 flex flex-col gap-6 shadow-2xl">
         
         {/* Row 1: Search and Sort */}
         <div className="flex flex-col md:flex-row gap-4 items-center w-full">
           <div className="relative w-full flex-1">
-            <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl" />
+            <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl transition-colors group-focus-within:text-accent-cyan" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search cars by make, model, category..."
-              className="w-full bg-slate-950/60 border border-white/5 rounded-xl pl-12 pr-4 py-3.5 focus:border-blue-500 outline-none transition-all duration-300 text-white placeholder-text-muted/65 text-sm"
+              className="w-full bg-slate-950/60 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 outline-none transition-all duration-300 text-white placeholder-text-muted/65 text-sm"
             />
           </div>
 
@@ -144,31 +144,32 @@ export default function Cars() {
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full bg-slate-950/60 border border-white/5 rounded-xl pl-12 pr-4 py-3.5 focus:border-blue-500 outline-none transition-all duration-300 text-white appearance-none cursor-pointer text-sm"
+              className="w-full bg-slate-950/60 border border-white/10 rounded-xl pl-12 pr-10 py-3.5 focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 outline-none transition-all duration-300 text-white appearance-none cursor-pointer text-sm"
             >
               <option value="price-asc" className="bg-slate-900">Price: Low to High</option>
               <option value="price-desc" className="bg-slate-900">Price: High to Low</option>
               <option value="name-asc" className="bg-slate-900">Alphabetical (A-Z)</option>
             </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted text-xs">▼</div>
           </div>
         </div>
 
         <hr className="border-white/5" />
 
         {/* Row 2: Categorization Filters */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Category Type Filter */}
-          <div>
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-3">Vehicle Class</span>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Vehicle Class</span>
             <div className="flex flex-wrap gap-2">
               {vehicleTypes.map((type) => (
                 <button
                   key={type}
                   onClick={() => setSelectedType(type)}
-                  className={`text-xs font-semibold px-4 py-2 rounded-lg border transition-all duration-300 ${
+                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
                     selectedType === type
-                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-400'
-                      : 'border-white/5 hover:border-white/10 text-text-muted hover:text-white bg-slate-900/20'
+                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
+                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
                   }`}
                 >
                   {type}
@@ -178,17 +179,17 @@ export default function Cars() {
           </div>
 
           {/* Fuel Type Filter */}
-          <div>
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-3">Propulsion System</span>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Propulsion System</span>
             <div className="flex flex-wrap gap-2">
               {fuelTypes.map((fuel) => (
                 <button
                   key={fuel}
                   onClick={() => setSelectedFuel(fuel)}
-                  className={`text-xs font-semibold px-4 py-2 rounded-lg border transition-all duration-300 ${
+                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
                     selectedFuel === fuel
-                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-400'
-                      : 'border-white/5 hover:border-white/10 text-text-muted hover:text-white bg-slate-900/20'
+                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
+                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
                   }`}
                 >
                   {fuel}
@@ -198,17 +199,17 @@ export default function Cars() {
           </div>
 
           {/* Availability Status Filter */}
-          <div>
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-3">Fleet Status</span>
+          <div className="flex flex-col gap-2">
+            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Fleet Status</span>
             <div className="flex flex-wrap gap-2">
               {statusTypes.map((status) => (
                 <button
                   key={status.value}
                   onClick={() => setSelectedStatus(status.value)}
-                  className={`text-xs font-semibold px-4 py-2 rounded-lg border transition-all duration-300 ${
+                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
                     selectedStatus === status.value
-                      ? 'bg-blue-500/10 border-blue-500/40 text-blue-400'
-                      : 'border-white/5 hover:border-white/10 text-text-muted hover:text-white bg-slate-900/20'
+                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
+                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
                   }`}
                 >
                   {status.label}
@@ -220,13 +221,13 @@ export default function Cars() {
 
         {/* Filters Summary / Reset */}
         {(searchQuery || selectedType !== 'All' || selectedStatus !== 'All' || selectedFuel !== 'All') && (
-          <div className="flex justify-between items-center bg-blue-500/5 border border-blue-500/10 p-3 rounded-xl mt-2 text-xs">
+          <div className="flex justify-between items-center bg-blue-500/5 border border-blue-500/10 p-3.5 rounded-xl mt-2 text-xs">
             <span className="text-text-muted">
               Active filters showing <strong className="text-white">{filteredAndSortedCars.length}</strong> vehicles.
             </span>
             <button
               onClick={resetFilters}
-              className="text-blue-400 font-bold hover:underline transition-colors cursor-pointer"
+              className="text-accent-cyan font-bold hover:underline transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
@@ -240,13 +241,24 @@ export default function Cars() {
           /* Premium Shimmer Skeleton Grid */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((skel) => (
-              <div key={skel} className="card-glass rounded-3xl h-[420px] overflow-hidden flex flex-col justify-between p-6">
-                <div className="h-44 rounded-2xl shimmer-placeholder mb-6"></div>
-                <div className="flex-grow flex flex-col gap-4">
-                  <div className="h-6 w-3/4 rounded-md shimmer-placeholder"></div>
-                  <div className="h-4 w-1/2 rounded-md shimmer-placeholder"></div>
+              <div key={skel} className="card-glass rounded-3xl overflow-hidden flex flex-col h-full p-6 gap-6">
+                <div className="h-52 -mx-6 -mt-6 rounded-b-none bg-white/5 border-b border-white/5 shimmer-placeholder"></div>
+                <div className="flex flex-col gap-6 flex-grow justify-between">
+                  <div className="flex flex-col gap-5">
+                    <div className="flex justify-between items-start gap-4">
+                      <div className="flex flex-col gap-2.5 w-full">
+                        <div className="h-3.5 w-16 rounded-md bg-white/5 shimmer-placeholder"></div>
+                        <div className="h-6 w-3/4 rounded-md bg-white/5 shimmer-placeholder"></div>
+                      </div>
+                      <div className="h-6 w-16 rounded-md bg-white/5 shimmer-placeholder shrink-0"></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 border-y border-white/5 py-4 my-1">
+                      <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
+                      <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
+                    </div>
+                  </div>
+                  <div className="h-12 w-full rounded-xl bg-white/5 shimmer-placeholder mt-4"></div>
                 </div>
-                <div className="h-10 w-full rounded-xl shimmer-placeholder mt-6"></div>
               </div>
             ))}
           </div>
@@ -275,7 +287,7 @@ export default function Cars() {
                 </p>
                 <button
                   onClick={resetFilters}
-                  className="btn-premium btn-premium-hover px-6 py-2.5 rounded-xl font-bold"
+                  className="btn-premium btn-premium-hover px-6 py-2.5 rounded-xl font-bold font-sans"
                 >
                   Clear All Filters
                 </button>

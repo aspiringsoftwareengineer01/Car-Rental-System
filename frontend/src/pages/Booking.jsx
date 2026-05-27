@@ -92,23 +92,34 @@ export default function Booking() {
       </div>
 
       {isLoading ? (
-        /* Loading Skeleton states */
-        <div className="flex flex-col gap-6 items-center py-20 justify-center">
-          <div className="w-12 h-12 rounded-full border-2 border-white/5 border-t-accent-purple animate-spin mb-4"></div>
-          <p className="text-text-muted text-sm font-semibold">Synchronizing fleet logs...</p>
+        /* Premium Shimmer Skeleton Grid */
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
+          {[1, 2].map((skel) => (
+            <div key={skel} className="card-glass rounded-[2rem] overflow-hidden flex flex-col justify-between p-6 md:p-8 gap-6 h-[340px]">
+              <div className="flex flex-col gap-4 flex-grow">
+                <div className="flex justify-between items-start gap-4">
+                  <div className="h-5 w-24 rounded-full bg-white/5 shimmer-placeholder"></div>
+                  <div className="h-6 w-16 rounded-lg bg-white/5 shimmer-placeholder shrink-0"></div>
+                </div>
+                <div className="h-7 w-2/3 rounded-md bg-white/5 shimmer-placeholder"></div>
+                <div className="h-16 w-full rounded-xl bg-white/5 shimmer-placeholder mt-2"></div>
+              </div>
+              <div className="h-12 w-full rounded-xl bg-white/5 shimmer-placeholder"></div>
+            </div>
+          ))}
         </div>
       ) : (
-        <div>
+        <div className="relative z-10">
           {activeTab === 'active' ? (
             /* ================= ACTIVE BOOKINGS TAB ================= */
             activeReservations.length === 0 ? (
-              <div className="card-glass p-12 text-center rounded-[2rem] max-w-lg mx-auto border-white/5 bg-slate-900/10">
+              <div className="card-glass p-12 text-center rounded-[2rem] max-w-lg mx-auto border-white/5 bg-slate-900/10 shadow-xl">
                 <IoCarSportOutline className="text-6xl text-accent-cyan/30 mx-auto mb-4 animate-bounce" />
                 <h3 className="text-xl font-bold mb-2">No Active Drive Scheduled</h3>
                 <p className="text-text-muted text-xs mb-6 leading-relaxed">
-                  Your luxury hanger is empty. Select from our ultra-performance collections and secure your date today.
+                  Your luxury hangar is empty. Select from our ultra-performance collections and secure your date today.
                 </p>
-                <Link to="/cars" className="btn-premium btn-premium-hover px-6 py-3 rounded-xl text-xs font-bold">
+                <Link to="/cars" className="btn-premium btn-premium-hover px-6 py-3 rounded-xl text-xs font-bold inline-block">
                   Browse Active Fleet
                 </Link>
               </div>
@@ -119,23 +130,23 @@ export default function Booking() {
                   return (
                     <div 
                       key={booking.id} 
-                      className="card-glass rounded-[2rem] border-white/10 overflow-hidden bg-slate-900/20 hover:border-accent-cyan/30 hover:shadow-lg hover:shadow-accent-cyan/5 transition-all duration-300 flex flex-col justify-between"
+                      className="card-glass rounded-[2rem] border-white/10 overflow-hidden bg-slate-900/20 hover:border-accent-cyan/30 hover:shadow-2xl hover:shadow-accent-cyan/5 transition-all duration-300 flex flex-col justify-between"
                     >
                       <div className="p-6 md:p-8 flex-grow">
                         {/* Header Details */}
                         <div className="flex justify-between items-start gap-4 mb-6 border-b border-white/5 pb-4">
                           <div>
-                            <span className="text-[10px] bg-green-500/10 border border-green-500/20 text-green-400 px-3 py-1 rounded-full font-bold uppercase">
+                            <span className="inline-flex items-center gap-1 bg-green-500/10 border border-green-500/30 text-green-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider select-none">
                               Active Drive
                             </span>
-                            <h3 className="text-xl font-black mt-2">{getDisplayName(booking.carId)}</h3>
+                            <h3 className="text-xl font-black mt-2 font-display">{getDisplayName(booking.carId)}</h3>
                             {spec && (
-                              <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mt-1">
+                              <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mt-1.5">
                                 {spec.type} • {spec.fuelType} • {spec.seats} Seats
                               </span>
                             )}
                           </div>
-                          <span className="font-mono text-xs text-text-muted bg-white/5 border border-white/5 px-3 py-1 rounded-lg">
+                          <span className="font-mono text-[10px] text-text-muted bg-white/5 border border-white/5 px-2.5 py-1 rounded-lg">
                             {booking.id}
                           </span>
                         </div>
@@ -144,24 +155,24 @@ export default function Booking() {
                         <div className="grid grid-cols-2 gap-4 bg-slate-950/45 p-4 rounded-2xl border border-white/5 mb-6">
                           <div>
                             <span className="text-[10px] text-text-muted font-bold block uppercase tracking-wider mb-1">Pick-Up Date</span>
-                            <strong className="text-white text-sm font-sans flex items-center gap-1.5">
-                              <IoCalendarOutline className="text-accent-cyan" />
-                              <span>{formatDate(booking.pickupDate)}</span>
+                            <strong className="text-white text-xs sm:text-sm font-sans flex items-center gap-1.5">
+                              <IoCalendarOutline className="text-accent-cyan shrink-0" />
+                              <span className="truncate">{formatDate(booking.pickupDate)}</span>
                             </strong>
                           </div>
                           <div>
                             <span className="text-[10px] text-text-muted font-bold block uppercase tracking-wider mb-1">Return Date</span>
-                            <strong className="text-white text-sm font-sans flex items-center gap-1.5">
-                              <IoCalendarOutline className="text-accent-purple" />
-                              <span>{formatDate(booking.returnDate)}</span>
+                            <strong className="text-white text-xs sm:text-sm font-sans flex items-center gap-1.5">
+                              <IoCalendarOutline className="text-accent-purple shrink-0" />
+                              <span className="truncate">{formatDate(booking.returnDate)}</span>
                             </strong>
                           </div>
                         </div>
 
                         {/* Location / Instructions */}
-                        <div className="flex items-center gap-2 text-xs text-text-muted mb-4">
-                          <IoLocationOutline className="text-accent-cyan shrink-0" />
-                          <span>Pick up at Antigravity Headquarters Terminal A</span>
+                        <div className="flex items-center gap-2 text-xs text-text-muted">
+                          <IoLocationOutline className="text-accent-cyan shrink-0 text-sm" />
+                          <span>Headquarters Terminal A (contactless)</span>
                         </div>
                       </div>
 
@@ -173,7 +184,7 @@ export default function Booking() {
                         </div>
                         <button
                           onClick={() => handleCancelClick(booking.id)}
-                          className="text-xs font-semibold px-4 py-2 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-xl transition-all cursor-pointer"
+                          className="text-xs font-bold px-4 py-2.5 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-xl transition-all duration-300 cursor-pointer"
                         >
                           Cancel Booking
                         </button>
@@ -186,7 +197,7 @@ export default function Booking() {
           ) : (
             /* ================= HISTORY & CANCELLED TAB ================= */
             pastReservations.length === 0 ? (
-              <div className="card-glass p-12 text-center rounded-[2rem] max-w-lg mx-auto border-white/5 bg-slate-900/10">
+              <div className="card-glass p-12 text-center rounded-[2rem] max-w-lg mx-auto border-white/5 bg-slate-900/10 shadow-xl">
                 <IoHourglassOutline className="text-6xl text-text-muted/30 mx-auto mb-4" />
                 <h3 className="text-xl font-bold mb-2">No Past Log Archive</h3>
                 <p className="text-text-muted text-xs leading-relaxed">
@@ -198,14 +209,14 @@ export default function Booking() {
                 {pastReservations.map((booking) => (
                   <div 
                     key={booking.id} 
-                    className="card-glass p-5 rounded-2xl border-white/5 bg-slate-900/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 opacity-75 hover:opacity-100 transition-opacity"
+                    className="card-glass p-5 rounded-2xl border-white/5 bg-slate-900/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 opacity-75 hover:opacity-100 transition-all duration-300"
                   >
                     <div className="flex items-center gap-4">
                       <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl">
                         <IoCloseCircleOutline className="text-2xl" />
                       </div>
                       <div>
-                        <h4 className="text-base font-bold text-white leading-tight">{getDisplayName(booking.carId)}</h4>
+                        <h4 className="text-base font-bold text-white leading-tight font-display">{getDisplayName(booking.carId)}</h4>
                         <span className="text-xs text-text-muted block mt-1 font-sans">
                           {formatDate(booking.pickupDate)} - {formatDate(booking.returnDate)}
                         </span>

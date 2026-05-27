@@ -142,29 +142,36 @@ export default function CarDetails() {
         <span>Back to fleet catalog</span>
       </Link>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
         {/* Dynamic Image / Graphic Panel */}
-        <div className="card-glass rounded-[2rem] p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden aspect-[4/3] group border-white/10 shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/30 to-slate-950/90 pointer-events-none"></div>
+        <div className="card-glass rounded-[2rem] p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden aspect-[4/3] group border-white/10 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-950">
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-slate-950/50 to-slate-950 pointer-events-none"></div>
+          
+          {/* Subtle neon spotlight rings */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full border border-accent-cyan/5 group-hover:border-accent-cyan/15 group-hover:scale-110 transition-all duration-700 pointer-events-none"></div>
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-accent-purple/5 group-hover:border-accent-purple/10 group-hover:scale-105 transition-all duration-700 pointer-events-none"></div>
+          
+          {/* Moving neon grid lines */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,242,254,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,242,254,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none group-hover:scale-[1.02] transition-transform duration-700"></div>
           
           {/* Status Badge */}
           <div className="absolute top-6 left-6 z-10">
             {isAvailable ? (
-              <span className="inline-flex items-center gap-1 bg-green-500/10 border border-green-500/20 text-green-400 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
-                <IoCheckmarkCircleOutline className="text-sm" />
+              <span className="inline-flex items-center gap-1.5 bg-green-500/10 border border-green-500/30 text-green-400 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider select-none shadow-md shadow-green-500/5">
+                <IoCheckmarkCircleOutline className="text-xs" />
                 <span>Available</span>
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 bg-white/5 border border-white/10 text-text-muted px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span className="inline-flex items-center gap-1.5 bg-white/5 border border-white/10 text-text-muted px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider select-none">
                 <span>Rented / Out of Office</span>
               </span>
             )}
           </div>
 
-          <IoSpeedometerOutline className="text-[14rem] text-white/5 group-hover:text-accent-cyan/10 transition-colors duration-700 group-hover:scale-105" />
+          <IoSpeedometerOutline className="text-[14rem] text-white/5 group-hover:text-accent-cyan/20 transition-all duration-700 group-hover:scale-105 filter drop-shadow-[0_0_20px_rgba(0,242,254,0.15)]" />
           
           <div className="absolute bottom-6 left-6 text-left">
-            <span className="text-[10px] bg-slate-950/75 border border-white/10 px-3 py-1 rounded-full text-accent-cyan font-mono font-bold tracking-wider uppercase">
+            <span className="text-[10px] bg-slate-950/80 border border-white/15 px-3.5 py-1.5 rounded-full text-accent-cyan font-mono font-bold tracking-widest uppercase shadow-md select-none">
               {car.type}
             </span>
           </div>
@@ -172,11 +179,11 @@ export default function CarDetails() {
 
         {/* Content details */}
         <div className="flex flex-col justify-center">
-          <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-1.5 rounded-full text-[10px] font-bold tracking-wider uppercase w-max mb-6">
-            ANTIGRAVITY SPECIAL FLEET
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-accent-cyan/10 to-accent-purple/10 border border-accent-cyan/25 text-accent-cyan px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase w-max mb-6 select-none">
+            ✦ ANTIGRAVITY SPECIAL FLEET
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-4 font-display">
-            {car.make} <span className="font-normal text-slate-300">{car.model}</span>
+            {car.make} <span className="font-normal text-slate-300 font-sans">{car.model}</span>
           </h1>
           <p className="text-text-muted text-base leading-relaxed mb-8">
             {specs.desc}
@@ -184,39 +191,39 @@ export default function CarDetails() {
 
           {/* Key Specs Grid */}
           <div className="grid grid-cols-3 gap-4 mb-8">
-            <div className="card-glass p-4 rounded-xl text-center border-white/5">
-              <IoSpeedometerOutline className="text-2xl text-accent-cyan mx-auto mb-2" />
-              <div className="text-[10px] text-text-muted uppercase tracking-wider mb-1">0-60 Time</div>
-              <div className="font-bold text-white font-sans text-sm">{specs.accel}</div>
+            <div className="card-glass p-4 rounded-xl text-center border-white/5 bg-slate-900/10 hover:border-accent-cyan/25 hover:shadow-lg transition-all duration-300 group">
+              <IoSpeedometerOutline className="text-2xl text-accent-cyan mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+              <div className="text-[9px] text-text-muted uppercase tracking-wider mb-1">0-60 Time</div>
+              <div className="font-bold text-white font-sans text-xs sm:text-sm">{specs.accel}</div>
             </div>
-            <div className="card-glass p-4 rounded-xl text-center border-white/5">
-              <IoBuildOutline className="text-2xl text-accent-purple mx-auto mb-2" />
-              <div className="text-[10px] text-text-muted uppercase tracking-wider mb-1">Peak Power</div>
-              <div className="font-bold text-white text-sm">{specs.hp}</div>
+            <div className="card-glass p-4 rounded-xl text-center border-white/5 bg-slate-900/10 hover:border-accent-purple/25 hover:shadow-lg transition-all duration-300 group">
+              <IoBuildOutline className="text-2xl text-accent-purple mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+              <div className="text-[9px] text-text-muted uppercase tracking-wider mb-1">Peak Power</div>
+              <div className="font-bold text-white font-sans text-xs sm:text-sm">{specs.hp}</div>
             </div>
-            <div className="card-glass p-4 rounded-xl text-center border-white/5">
-              <IoPeopleOutline className="text-2xl text-accent-cyan mx-auto mb-2" />
-              <div className="text-[10px] text-text-muted uppercase tracking-wider mb-1">Capacity</div>
-              <div className="font-bold text-white text-sm">{specs.seats}</div>
+            <div className="card-glass p-4 rounded-xl text-center border-white/5 bg-slate-900/10 hover:border-accent-cyan/25 hover:shadow-lg transition-all duration-300 group">
+              <IoPeopleOutline className="text-2xl text-accent-cyan mx-auto mb-2 group-hover:scale-110 transition-transform duration-300" />
+              <div className="text-[9px] text-text-muted uppercase tracking-wider mb-1">Capacity</div>
+              <div className="font-bold text-white font-sans text-xs sm:text-sm">{specs.seats}</div>
             </div>
           </div>
 
-          <div className="flex items-center justify-between border-t border-white/5 pt-8">
+          <div className="flex items-center justify-between border-t border-white/5 pt-8 flex-wrap sm:flex-nowrap gap-4">
             <div>
               <div className="text-text-muted text-xs uppercase tracking-widest">Renting Daily Rate</div>
-              <div className="text-3xl font-black text-white mt-1 font-sans">${car.pricePerDay} <span className="text-xs text-text-muted font-normal">/ day</span></div>
+              <div className="text-3xl font-black text-white mt-1 font-sans">${car.pricePerDay} <span className="text-xs text-text-muted font-normal font-sans">/ day</span></div>
             </div>
             {isAvailable ? (
               <button 
                 onClick={handleBookClick}
-                className="btn-premium btn-premium-hover px-8 py-3.5 rounded-xl font-bold text-sm cursor-pointer shadow-lg shadow-blue-500/10"
+                className="btn-premium btn-premium-hover px-8 py-3.5 rounded-xl font-bold text-sm cursor-pointer shadow-lg shadow-accent-cyan/10"
               >
                 Reserve Car Now
               </button>
             ) : (
               <button 
                 disabled
-                className="px-8 py-3.5 rounded-xl bg-white/5 border border-white/5 text-text-muted text-sm font-bold cursor-not-allowed"
+                className="px-8 py-3.5 rounded-xl bg-white/5 border border-white/5 text-text-muted/50 text-sm font-bold cursor-not-allowed select-none"
               >
                 Unavailable
               </button>
