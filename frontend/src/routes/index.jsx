@@ -12,6 +12,7 @@ import CarDetails from '../pages/CarDetails';
 import Booking from '../pages/Booking';
 import Dashboard from '../pages/Dashboard';
 import Auth from '../pages/Auth';
+import Admin from '../pages/Admin';
 
 // Security Wrappers
 import ProtectedRoute from '../components/common/ProtectedRoute';
@@ -46,6 +47,14 @@ export const router = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'admin',
+        element: (
+          <ProtectedRoute>
+            <Admin />
           </ProtectedRoute>
         ),
       },

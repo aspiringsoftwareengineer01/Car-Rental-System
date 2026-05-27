@@ -8,7 +8,8 @@ import {
   IoPersonOutline, 
   IoLogOutOutline, 
   IoChevronDownOutline,
-  IoBookmarkOutline
+  IoBookmarkOutline,
+  IoSettingsOutline
 } from 'react-icons/io5';
 import { useAuth } from '../../context/AuthContext';
 
@@ -132,6 +133,15 @@ export default function Navbar() {
                       <span>Bookings</span>
                     </Link>
 
+                    <Link
+                      to="/admin"
+                      onClick={() => setShowDropdown(false)}
+                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
+                    >
+                      <IoSettingsOutline className="text-lg text-accent-coral" />
+                      <span>Admin Console</span>
+                    </Link>
+
                     <hr className="border-white/5 my-1.5" />
 
                     <button
@@ -213,6 +223,15 @@ export default function Navbar() {
                     >
                       <IoPersonOutline className="text-xl text-accent-cyan" />
                       <span>User Profile</span>
+                    </Link>
+
+                    <Link
+                      to="/admin"
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-3 text-text-muted hover:text-white py-2 font-semibold text-sm"
+                    >
+                      <IoSettingsOutline className="text-xl text-accent-coral" />
+                      <span>Admin Console</span>
                     </Link>
 
                     <button
