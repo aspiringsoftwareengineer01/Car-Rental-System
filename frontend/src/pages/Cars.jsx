@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   IoSearchOutline, 
@@ -10,11 +11,28 @@ import {
   IoCloudDoneOutline
 } from 'react-icons/io5';
 import { useCars } from '../hooks/useCars';
+import { useAuth } from '../context/AuthContext';
 import CarCard from '../components/cars/CarCard';
+import BookingModal from '../components/cars/BookingModal';
 
 export default function Cars() {
   // Load dynamic data from custom Supabase hook
   const { cars, loading, isMock } = useCars();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleBook = (car) => {
+    if (!user) {
+      navigate('/auth', { state: { from: location } });
+      return;
+    }
+    setSelectedCar(car);
+    setIsModalOpen(true);
+  };
 
   // Local state for search, filters, and sorting
   const [searchQuery, setSearchQuery] = useState('');
@@ -240,7 +258,7 @@ export default function Cars() {
                 className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
               >
                 {filteredAndSortedCars.map((car) => (
-                  <CarCard key={car.id} car={car} />
+                  <CarCard key={car.id} car={car} onBook={handleBook} />
                 ))}
               </motion.div>
             ) : (
@@ -266,6 +284,13 @@ export default function Cars() {
           </AnimatePresence>
         )}
       </div>
+
+      {/* Interactive Booking Modal Layer */}
+      <BookingModal 
+        car={selectedCar} 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+      />
     </div>
   );
 }

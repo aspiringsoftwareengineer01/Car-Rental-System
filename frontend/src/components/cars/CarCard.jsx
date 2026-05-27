@@ -11,7 +11,7 @@ import {
   IoCarSportOutline
 } from 'react-icons/io5';
 
-export default function CarCard({ car }) {
+export default function CarCard({ car, onBook }) {
   // Determine availability styling
   const isAvailable = car.status === 'available';
   const isMaintenance = car.status === 'maintenance';
@@ -99,13 +99,13 @@ export default function CarCard({ car }) {
 
         {/* Action Button */}
         {isAvailable ? (
-          <Link 
-            to="/booking" 
-            className="w-full btn-premium btn-premium-hover py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-bold shadow-md shadow-blue-500/5 mt-auto"
+          <button 
+            onClick={() => onBook(car)}
+            className="w-full btn-premium btn-premium-hover py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-bold shadow-md shadow-blue-500/5 mt-auto cursor-pointer"
           >
             <span>Reserve Vehicle</span>
             <IoChevronForwardOutline />
-          </Link>
+          </button>
         ) : (
           <button 
             disabled 
