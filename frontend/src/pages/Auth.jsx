@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   IoLockClosedOutline, 
@@ -63,8 +63,16 @@ export default function Auth() {
       } else {
         const result = await signUp(email, password, name);
         if (result?.success) {
-          // If Supabase is connected, signup sends email verification, otherwise mock logs them in
-          navigate(from, { replace: true });
+          // Check if session exists (user is auto-logged in, e.g. Demo Mode or auto-confirm enabled)
+          if (result.data?.session) {
+            navigate(from, { replace: true });
+          } else {
+            // Email confirmation required: switch to login tab, keep email for convenience, clear name/password
+            setIsLogin(true);
+            setName('');
+            setPassword('');
+            setValidationError('');
+          }
         }
       }
     } catch (err) {
