@@ -12,6 +12,7 @@ import {
   IoChevronForwardOutline,
   IoFingerPrintOutline
 } from 'react-icons/io5';
+import { getCarImage } from '../utils/carImages';
 
 // Mock data for featured fleet
 const FEATURED_CARS = [
@@ -138,10 +139,18 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Graphic Silhouette */}
-            <div className="my-8 flex justify-center items-center relative py-6">
-              <div className="absolute inset-0 bg-gradient-to-t from-blue-500/10 to-transparent blur-md rounded-full"></div>
-              <IoCarSportOutline className="text-[13rem] text-slate-100/5 drop-shadow-[0_15px_35px_rgba(0,180,255,0.15)] animate-pulse" />
+            {/* Graphic Silhouette (Seamless Showcase) */}
+            <div className="my-8 flex justify-center items-center relative py-6 overflow-hidden rounded-2xl h-52 bg-slate-950/40">
+              {/* Soft Vignette Overlay to blend the square image background seamless into the Card */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950 z-20 pointer-events-none" />
+              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-slate-950/80 to-transparent z-20 pointer-events-none" />
+              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-slate-950/80 to-transparent z-20 pointer-events-none" />
+
+              <img 
+                src="/images/porsche_911.png" 
+                alt="Porsche 911"
+                className="w-full h-full object-cover z-10 filter drop-shadow-[0_15px_30px_rgba(0,180,255,0.25)] select-none pointer-events-none hover:scale-105 transition-transform duration-700"
+              />
             </div>
 
             <div className="grid grid-cols-3 border-t border-white/5 pt-4 text-center">
@@ -185,14 +194,29 @@ export default function Home() {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               className={`group card-glass rounded-3xl overflow-hidden hover:border-blue-500/40 hover:shadow-2xl ${car.glowColor} transition-all duration-300`}
             >
-              {/* Image box */}
-              <div className="h-56 bg-gradient-to-b from-slate-900 to-slate-950 border-b border-white/5 relative flex items-center justify-center overflow-hidden">
-                {/* Image Placeholder Styling */}
-                <div className="absolute inset-0 bg-slate-950/20 group-hover:scale-105 transition-transform duration-500"></div>
-                <div className="absolute top-4 left-4 bg-slate-950/75 border border-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold">
+              {/* Image box (True Full-Bleed Studio Integration) */}
+              <div className="h-56 bg-slate-950 relative overflow-hidden">
+                {/* Soft Multi-Directional Vignette Gradients to blend image into Card UI */}
+                {/* Bottom soft edge blend */}
+                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-20 pointer-events-none" />
+
+                {/* Top soft edge blend */}
+                <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950 via-slate-950/40 to-transparent z-20 pointer-events-none" />
+
+                {/* Left soft edge blend */}
+                <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-slate-950/50 to-transparent z-20 pointer-events-none" />
+
+                {/* Right soft edge blend */}
+                <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-slate-950/50 to-transparent z-20 pointer-events-none" />
+
+                <div className="absolute top-4 left-4 bg-slate-950/85 border border-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold z-30 select-none">
                   {car.imageText}
                 </div>
-                <IoCarSportOutline className="text-9xl text-white/5 group-hover:text-blue-500/10 transition-colors duration-500 group-hover:scale-110" />
+                <img 
+                  src={getCarImage(car.id)} 
+                  alt={`${car.make} ${car.model}`}
+                  className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
+                />
               </div>
 
               {/* Specs and names */}

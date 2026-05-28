@@ -7,9 +7,9 @@ import {
   IoCheckmarkCircleOutline, 
   IoWarningOutline, 
   IoBuildOutline,
-  IoChevronForwardOutline,
-  IoCarSportOutline
+  IoChevronForwardOutline
 } from 'react-icons/io5';
+import { getCarImage } from '../../utils/carImages';
 
 export default function CarCard({ car, onBook }) {
   // Determine availability styling
@@ -50,20 +50,37 @@ export default function CarCard({ car, onBook }) {
       transition={{ duration: 0.3, ease: "easeOut" }}
       className="group card-glass rounded-3xl overflow-hidden hover:border-accent-cyan/40 hover:shadow-2xl hover:shadow-accent-cyan/5 flex flex-col h-full relative"
     >
-      {/* Visual Thumbnail */}
-      <div className="h-52 bg-gradient-to-b from-slate-900 to-slate-950 border-b border-white/5 relative flex items-center justify-center overflow-hidden shrink-0">
-        <div className="absolute inset-0 bg-slate-950/40 group-hover:scale-105 transition-transform duration-700 pointer-events-none"></div>
-        <div className="absolute top-4 left-4 z-10">
+      {/* Visual Thumbnail (True Full-Bleed Studio Integration) */}
+      <div className="h-56 bg-slate-950 relative overflow-hidden shrink-0">
+        {/* Soft Multi-Directional Vignette Gradients to blend image into Card UI */}
+        {/* Bottom soft edge blend */}
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-20 pointer-events-none" />
+
+        {/* Top soft edge blend */}
+        <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950 via-slate-950/40 to-transparent z-20 pointer-events-none" />
+
+        {/* Left soft edge blend */}
+        <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-slate-950/50 to-transparent z-20 pointer-events-none" />
+
+        {/* Right soft edge blend */}
+        <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-slate-950/50 to-transparent z-20 pointer-events-none" />
+
+        {/* Status Badge overlay */}
+        <div className="absolute top-4 left-4 z-30">
           {statusBadge()}
         </div>
-        <div className="absolute top-4 right-4 bg-slate-950/80 border border-white/10 px-3 py-1 rounded-full text-[10px] font-mono font-bold text-accent-cyan tracking-wider select-none">
+
+        {/* Car Type badge overlay */}
+        <div className="absolute top-4 right-4 bg-slate-950/80 border border-white/10 px-3 py-1 rounded-full text-[10px] font-mono font-bold text-accent-cyan tracking-wider select-none z-30">
           {car.type}
         </div>
-        
-        {/* Subtle grid background accent */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.01)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.01)_1px,transparent_1px)] bg-[size:14px_24px] pointer-events-none"></div>
-        
-        <IoCarSportOutline className="text-9xl text-white/5 group-hover:text-accent-cyan/15 transition-all duration-700 group-hover:scale-110" />
+
+        {/* Car Image - True Full-Bleed Edge-to-Edge */}
+        <img 
+          src={getCarImage(car.id)} 
+          alt={`${car.make} ${car.model}`}
+          className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
+        />
       </div>
 
       {/* Details Area */}

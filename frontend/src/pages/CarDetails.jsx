@@ -12,6 +12,7 @@ import {
 import { useCars } from '../hooks/useCars';
 import { useAuth } from '../context/AuthContext';
 import BookingModal from '../components/cars/BookingModal';
+import { getCarImage } from '../utils/carImages';
 
 export default function CarDetails() {
   const { id } = useParams();
@@ -143,19 +144,23 @@ export default function CarDetails() {
       </Link>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-        {/* Dynamic Image / Graphic Panel */}
-        <div className="card-glass rounded-[2rem] p-8 flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden aspect-[4/3] group border-white/10 shadow-2xl bg-gradient-to-br from-slate-900 to-slate-950">
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/10 via-slate-950/50 to-slate-950 pointer-events-none"></div>
-          
-          {/* Subtle neon spotlight rings */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 rounded-full border border-accent-cyan/5 group-hover:border-accent-cyan/15 group-hover:scale-110 transition-all duration-700 pointer-events-none"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full border border-accent-purple/5 group-hover:border-accent-purple/10 group-hover:scale-105 transition-all duration-700 pointer-events-none"></div>
-          
-          {/* Moving neon grid lines */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,242,254,0.02)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,242,254,0.02)_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none group-hover:scale-[1.02] transition-transform duration-700"></div>
-          
+        {/* Dynamic Image / Graphic Panel (True Full-Bleed Showcase) */}
+        <div className="card-glass rounded-[2rem] flex flex-col items-center justify-center min-h-[400px] relative overflow-hidden aspect-[4/3] group border-white/10 shadow-2xl bg-slate-950">
+          {/* Soft Multi-Directional Vignette Gradients to blend image into Card UI */}
+          {/* Bottom soft edge blend */}
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-20 pointer-events-none" />
+
+          {/* Top soft edge blend */}
+          <div className="absolute top-0 left-0 right-0 h-28 bg-gradient-to-b from-slate-950 via-slate-950/40 to-transparent z-20 pointer-events-none" />
+
+          {/* Left soft edge blend */}
+          <div className="absolute top-0 bottom-0 left-0 w-16 bg-gradient-to-r from-slate-950/60 to-transparent z-20 pointer-events-none" />
+
+          {/* Right soft edge blend */}
+          <div className="absolute top-0 bottom-0 right-0 w-16 bg-gradient-to-l from-slate-950/60 to-transparent z-20 pointer-events-none" />
+
           {/* Status Badge */}
-          <div className="absolute top-6 left-6 z-10">
+          <div className="absolute top-6 left-6 z-30">
             {isAvailable ? (
               <span className="inline-flex items-center gap-1.5 bg-green-500/10 border border-green-500/30 text-green-400 px-3.5 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider select-none shadow-md shadow-green-500/5">
                 <IoCheckmarkCircleOutline className="text-xs" />
@@ -168,9 +173,13 @@ export default function CarDetails() {
             )}
           </div>
 
-          <IoSpeedometerOutline className="text-[14rem] text-white/5 group-hover:text-accent-cyan/20 transition-all duration-700 group-hover:scale-105 filter drop-shadow-[0_0_20px_rgba(0,242,254,0.15)]" />
+          <img 
+            src={getCarImage(car.id)} 
+            alt={`${car.make} ${car.model}`}
+            className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
+          />
           
-          <div className="absolute bottom-6 left-6 text-left">
+          <div className="absolute bottom-6 left-6 text-left z-30">
             <span className="text-[10px] bg-slate-950/80 border border-white/15 px-3.5 py-1.5 rounded-full text-accent-cyan font-mono font-bold tracking-widest uppercase shadow-md select-none">
               {car.type}
             </span>
