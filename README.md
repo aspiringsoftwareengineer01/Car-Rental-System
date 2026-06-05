@@ -6,6 +6,32 @@ This document serves as a comprehensive system specification, detailing the arch
 
 ---
 
+## 🖼️ Application Visual Previews
+
+Here is a visual showcase of the Antigravity Car Rental System, detailing its premium glassmorphic user interface:
+
+### 1. Home Page & Luxury Showcase
+A dark-themed landing page showcasing premium fleet highlights (e.g., Porsche 911) with smooth sliding animations, glassmorphic info overlays, and contactless booking call-to-actions.
+
+![Home Page Preview](docs/screenshots/homepage_preview.png)
+
+### 2. Luxury Performance Fleet Catalog
+A dynamic catalog allowing customers to explore and filter the elite vehicle selection. Cars are organized in card grids with hover effects, key performance statistics, and real-time daily rental rates.
+
+![Fleet Catalog Preview](docs/screenshots/cars_catalog.png)
+
+### 3. Customer Dashboard & Expenditure Analytics
+An individual customer's command center featuring high-level statistics, interactive booking calendars, active reservation logs, and detailed spending trends visualized via responsive glowing charts.
+
+![Customer Dashboard Preview](docs/screenshots/user_dashboard.png)
+
+### 4. System Administrator Console
+A central hub for system management, featuring aggregate business statistics, vehicle inventory forms to add/remove assets, and client booking logs with administrative override controls.
+
+![Admin Console Preview](docs/screenshots/admin_console.png)
+
+---
+
 ## 🏛️ System Architecture & Framework
 
 The Antigravity Car Rental System employs a **Frontend + BaaS (Backend-as-a-Service)** architectural model. This decoupling removes the necessity of a traditional mid-tier server, optimizing response times and reducing operational latency.
