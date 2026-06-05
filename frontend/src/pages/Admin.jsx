@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
 
 export default function Admin() {
   const { cars, loading: carsLoading, addCar, deleteCar } = useCars();
-  const { bookings, loading: bookingsLoading, cancelBooking } = useBookings();
+  const { bookings, loading: bookingsLoading, cancelBooking, verifyBooking } = useBookings();
 
   // Selected administrative view tab
   const [activeTab, setActiveTab] = useState('overview'); // 'overview' | 'cars' | 'bookings'
@@ -139,6 +139,17 @@ export default function Admin() {
         toast.success('Reservation cancelled by Admin.');
       } else {
         toast.error('Failed to cancel booking.');
+      }
+    }
+  };
+
+  const handleVerifyBookingClick = async (bookingId) => {
+    if (window.confirm(`Verify and approve reservation transaction ${bookingId}?`)) {
+      const result = await verifyBooking(bookingId);
+      if (result.success) {
+        toast.success('Reservation verified by Admin.');
+      } else {
+        toast.error('Failed to verify booking.');
       }
     }
   };
@@ -475,6 +486,10 @@ export default function Admin() {
                                   <span className="inline-flex items-center gap-1 bg-green-500/10 border border-green-500/20 text-green-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
                                     Confirmed
                                   </span>
+                                ) : b.status === 'pending' ? (
+                                  <span className="inline-flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                    Pending
+                                  </span>
                                 ) : (
                                   <span className="inline-flex items-center gap-1 bg-red-500/10 border border-red-500/20 text-red-400 px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">
                                     Cancelled
@@ -482,7 +497,22 @@ export default function Admin() {
                                 )}
                               </td>
                               <td className="px-6 py-4 text-center">
-                                {b.status === 'confirmed' ? (
+                                {b.status === 'pending' ? (
+                                  <div className="flex gap-2 justify-center">
+                                    <button
+                                      onClick={() => handleVerifyBookingClick(b.id)}
+                                      className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+                                    >
+                                      Verify
+                                    </button>
+                                    <button
+                                      onClick={() => handleCancelBookingClick(b.id)}
+                                      className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+                                    >
+                                      Cancel
+                                    </button>
+                                  </div>
+                                ) : b.status === 'confirmed' ? (
                                   <button
                                     onClick={() => handleCancelBookingClick(b.id)}
                                     className="text-xs font-semibold text-red-400 hover:text-red-300 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
@@ -515,6 +545,8 @@ export default function Admin() {
                             <div>
                               {b.status === 'confirmed' ? (
                                 <span className="inline-flex items-center bg-green-500/10 border border-green-500/20 text-green-400 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider">Confirmed</span>
+                              ) : b.status === 'pending' ? (
+                                <span className="inline-flex items-center bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider">Pending</span>
                               ) : (
                                 <span className="inline-flex items-center bg-red-500/10 border border-red-500/20 text-red-400 px-2.5 py-1 rounded-full text-[9px] font-bold uppercase tracking-wider">Cancelled</span>
                               )}
@@ -534,7 +566,22 @@ export default function Admin() {
                           
                           <div className="flex justify-between items-center gap-2">
                             <span className="text-[10px] text-text-muted font-mono">{b.pickupDate} to {b.returnDate}</span>
-                            {b.status === 'confirmed' ? (
+                            {b.status === 'pending' ? (
+                              <div className="flex gap-2">
+                                <button
+                                  onClick={() => handleVerifyBookingClick(b.id)}
+                                  className="text-xs font-bold text-emerald-400 hover:text-emerald-300 border border-emerald-500/20 bg-emerald-500/5 hover:bg-emerald-500/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+                                >
+                                  Verify
+                                </button>
+                                <button
+                                  onClick={() => handleCancelBookingClick(b.id)}
+                                  className="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
+                                >
+                                  Cancel
+                                </button>
+                              </div>
+                            ) : b.status === 'confirmed' ? (
                               <button
                                 onClick={() => handleCancelBookingClick(b.id)}
                                 className="text-xs font-bold text-red-400 hover:text-red-300 border border-red-500/20 bg-red-500/5 hover:bg-red-500/10 px-3.5 py-2.5 rounded-xl transition-all cursor-pointer"

@@ -42,7 +42,7 @@ export default function Booking() {
     }
   };
 
-  const activeReservations = bookings.filter(b => b.status === 'confirmed');
+  const activeReservations = bookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
   const pastReservations = bookings.filter(b => b.status === 'cancelled');
 
   const isLoading = bookingsLoading || carsLoading;
@@ -136,9 +136,15 @@ export default function Booking() {
                         {/* Header Details */}
                         <div className="flex justify-between items-start gap-4 mb-6 border-b border-white/5 pb-4">
                           <div>
-                            <span className="inline-flex items-center gap-1 bg-green-500/10 border border-green-500/30 text-green-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider select-none">
-                              Active Drive
-                            </span>
+                            {booking.status === 'pending' ? (
+                              <span className="inline-flex items-center gap-1 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider select-none">
+                                Pending Verification
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1 bg-green-500/10 border border-green-500/30 text-green-400 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-wider select-none">
+                                Active Drive
+                              </span>
+                            )}
                             <h3 className="text-xl font-black mt-2 font-display">{getDisplayName(booking.carId)}</h3>
                             {spec && (
                               <span className="text-[10px] text-text-muted font-mono uppercase tracking-wider block mt-1.5">

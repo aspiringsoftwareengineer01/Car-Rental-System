@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS public.bookings (
     pickup_date DATE NOT NULL,
     return_date DATE NOT NULL,
     total_price NUMERIC(10, 2) NOT NULL,
-    status VARCHAR(50) NOT NULL DEFAULT 'confirmed' CHECK (status IN ('confirmed', 'cancelled')),
+    status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled')),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
     CONSTRAINT check_dates CHECK (return_date >= pickup_date)
 );

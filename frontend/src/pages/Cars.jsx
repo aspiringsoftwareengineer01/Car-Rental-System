@@ -1,14 +1,17 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
+import toast from 'react-hot-toast';
 import { 
   IoSearchOutline, 
-  IoCarSportOutline, 
-  IoFilterOutline, 
-  IoFunnelOutline,
-  IoSwapVerticalOutline,
+  IoCarSport, 
+  IoOptionsOutline,
+  IoClose,
+  IoPersonOutline,
+  IoCartOutline,
   IoCloudOfflineOutline,
-  IoCloudDoneOutline
+  IoCloudDoneOutline,
+  IoFunnelOutline
 } from 'react-icons/io5';
 import { useCars } from '../hooks/useCars';
 import { useAuth } from '../context/AuthContext';
@@ -25,6 +28,18 @@ export default function Cars() {
   const [selectedCar, setSelectedCar] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Local state for search, filters, location, and sorting
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedLocation, setSelectedLocation] = useState('Mumbai');
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [maxPrice, setMaxPrice] = useState(150000);
+  const [selectedBrand, setSelectedBrand] = useState('All');
+  const [sortBy, setSortBy] = useState('price-asc');
+
+  // Filter Categories Lists
+  const vehicleTypes = ['Sedan', 'Sports', 'SUV', 'Electric'];
+  const brandsList = ['All', 'Porsche', 'Tesla', 'Range Rover', 'Audi', 'BMW', 'Mercedes-AMG', 'Lucid', 'Ferrari'];
+
   const handleBook = (car) => {
     if (!user) {
       navigate('/auth', { state: { from: location } });
@@ -34,22 +49,14 @@ export default function Cars() {
     setIsModalOpen(true);
   };
 
-  // Local state for search, filters, and sorting
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedType, setSelectedType] = useState('All');
-  const [selectedStatus, setSelectedStatus] = useState('All');
-  const [selectedFuel, setSelectedFuel] = useState('All');
-  const [sortBy, setSortBy] = useState('price-asc');
-
-  // Filter Categories Lists
-  const vehicleTypes = ['All', 'Electric', 'Sports', 'SUV'];
-  const statusTypes = [
-    { label: 'All Statuses', value: 'All' },
-    { label: 'Available Only', value: 'available' },
-    { label: 'Rented', value: 'rented' },
-    { label: 'Maintenance', value: 'maintenance' },
-  ];
-  const fuelTypes = ['All', 'Electric', 'Gasoline', 'Hybrid'];
+  // Toggle Type selection helper
+  const handleTypeChange = (type) => {
+    if (selectedTypes.includes(type)) {
+      setSelectedTypes(selectedTypes.filter((t) => t !== type));
+    } else {
+      setSelectedTypes([...selectedTypes, type]);
+    }
+  };
 
   // Advanced Filtering and Sorting Engine
   const filteredAndSortedCars = useMemo(() => {
@@ -60,241 +67,276 @@ export default function Cars() {
         car.model.toLowerCase().includes(searchQuery.toLowerCase()) ||
         car.type.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // 2. Category Type Filter
-      const matchesType = selectedType === 'All' || car.type === selectedType;
+      // 2. Multi-select Types
+      const matchesType = selectedTypes.length === 0 || selectedTypes.includes(car.type);
 
-      // 3. Status Badge Filter
-      const matchesStatus = selectedStatus === 'All' || car.status === selectedStatus;
+      // 3. Price Filter (evaluates against scaled display rate of pricePerDay * 15)
+      const displayPrice = car.pricePerDay * 15;
+      const matchesPrice = displayPrice <= maxPrice;
 
-      // 4. Fuel Type Filter
-      const matchesFuel = selectedFuel === 'All' || car.fuelType === selectedFuel;
+      // 4. Brand Match
+      const matchesBrand = selectedBrand === 'All' || car.make === selectedBrand;
 
-      return matchesSearch && matchesType && matchesStatus && matchesFuel;
+      return matchesSearch && matchesType && matchesPrice && matchesBrand;
     }).sort((a, b) => {
-      // Sorting Cases
       if (sortBy === 'price-asc') return a.pricePerDay - b.pricePerDay;
       if (sortBy === 'price-desc') return b.pricePerDay - a.pricePerDay;
-      if (sortBy === 'name-asc') return `${a.make} ${a.model}`.localeCompare(`${b.make} ${b.model}`);
       return 0;
     });
-  }, [cars, searchQuery, selectedType, selectedStatus, selectedFuel, sortBy]);
+  }, [cars, searchQuery, selectedTypes, maxPrice, selectedBrand, sortBy]);
 
   // Reset helper
   const resetFilters = () => {
     setSearchQuery('');
-    setSelectedType('All');
-    setSelectedStatus('All');
-    setSelectedFuel('All');
+    setSelectedTypes([]);
+    setMaxPrice(150000);
+    setSelectedBrand('All');
+    setSelectedLocation('Mumbai');
     setSortBy('price-asc');
   };
 
+  const handleCartClick = () => {
+    toast.success("Checkout active! Rent vehicles directly from the fleet list.");
+  };
+
   return (
-    <div className="py-24 px-6 max-w-7xl mx-auto min-h-screen bg-slate-950 text-white relative">
-      {/* Decorative Glow */}
-      <div className="absolute top-10 left-10 w-96 h-96 bg-blue-600/5 rounded-full blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-10 right-10 w-96 h-96 bg-purple-600/5 rounded-full blur-[100px] pointer-events-none"></div>
+    <div className="min-h-screen bg-slate-950 text-white pt-10 pb-24 px-8 lg:px-12 w-full max-w-none relative flex flex-col lg:flex-row gap-12">
+      {/* Decorative Blur Spots */}
+      <div className="absolute top-20 left-20 w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none"></div>
+      <div className="absolute bottom-20 right-20 w-[400px] h-[400px] bg-purple-600/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-      {/* Header Info */}
-      <div className="text-center max-w-3xl mx-auto mb-12 relative">
-        <div className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-4 py-2 rounded-full text-xs font-semibold uppercase tracking-wider mb-6">
-          <IoCarSportOutline className="text-sm" />
-          <span>Active Premium Catalog</span>
-        </div>
-        <h1 className="text-4xl md:text-6xl font-extrabold mb-6 tracking-tight font-display">
-          Command Your Journey
-        </h1>
-        <p className="text-text-muted text-lg leading-relaxed mb-6">
-          Select from our curated list of engineering marvels. Filter by specification type, availability, or propulsion method instantly.
-        </p>
-
-        {/* Supabase Connection Status Bar */}
-        <div className="inline-flex items-center justify-center">
-          {isMock ? (
-            <div className="inline-flex items-center gap-2 bg-yellow-500/5 border border-yellow-500/10 px-4 py-2 rounded-xl text-xs text-yellow-400">
-              <IoCloudOfflineOutline className="text-sm animate-pulse" />
-              <span>Offline Demo Mode active. Fallback mock database is loaded.</span>
-            </div>
-          ) : (
-            <div className="inline-flex items-center gap-2 bg-green-500/5 border border-green-500/10 px-4 py-2 rounded-xl text-xs text-green-400">
-              <IoCloudDoneOutline className="text-sm animate-bounce" />
-              <span>Live Database Connected. Syncing car entries via Supabase.</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Search & Filtration Panels */}
-      <div className="card-glass p-6 md:p-8 rounded-[2rem] border border-white/5 mb-16 relative z-10 flex flex-col gap-6 shadow-2xl">
+      {/* ================= LEFT SIDEBAR FILTER PANEL ================= */}
+      <aside className="w-full lg:w-72 shrink-0 flex flex-col gap-8 card-glass p-6 rounded-[2rem] border border-white/5 relative z-10">
         
-        {/* Row 1: Search and Sort */}
+        {/* Brand Header */}
+        <div className="flex items-center gap-3 pb-6 border-b border-white/5">
+          <div className="bg-gradient-to-tr from-accent-cyan to-accent-purple p-2.5 rounded-xl text-slate-950">
+            <IoCarSport className="text-xl" />
+          </div>
+          <div>
+            <h2 className="font-display font-black text-lg tracking-tight bg-gradient-to-r from-white via-white to-purple-400 bg-clip-text text-transparent uppercase">
+              Car Rental System
+            </h2>
+            <span className="text-[9px] font-mono tracking-widest text-slate-500 font-bold block uppercase mt-0.5">
+              Premium Vehicles
+            </span>
+          </div>
+        </div>
+
+        {/* Filter - Location */}
+        <div className="flex flex-col gap-2 relative">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 select-none">
+            <span>Location</span>
+            <span className="text-[10px] text-purple-400">▼</span>
+          </div>
+          <div className="relative">
+            <select 
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              className="w-full bg-slate-900/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white appearance-none outline-none focus:border-purple-500/50 cursor-pointer"
+            >
+              <option value="Mumbai" className="bg-slate-950 text-white">Mumbai</option>
+              <option value="Bangalore" className="bg-slate-950 text-white">Bangalore</option>
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">▼</div>
+          </div>
+        </div>
+
+        {/* Filter - Car Type Checkboxes */}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 select-none">
+            <span>Car Type</span>
+            <button 
+              onClick={() => setSelectedTypes([])} 
+              title="Clear type selection"
+              className="text-slate-500 hover:text-white transition-colors cursor-pointer"
+            >
+              <IoClose className="text-sm" />
+            </button>
+          </div>
+          <div className="flex flex-col gap-3">
+            {vehicleTypes.map((type) => {
+              const isChecked = selectedTypes.includes(type);
+              return (
+                <label key={type} className="flex items-center gap-3 cursor-pointer text-sm font-semibold text-slate-300 hover:text-white select-none">
+                  <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() => handleTypeChange(type)}
+                    className="hidden"
+                  />
+                  <div className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all ${
+                    isChecked 
+                      ? 'bg-purple-500 border-purple-500 text-white shadow-[0_0_10px_rgba(168,85,247,0.4)]' 
+                      : 'border-white/10 bg-slate-900/40 hover:border-white/20'
+                  }`}>
+                    {isChecked && <span className="text-xs">✓</span>}
+                  </div>
+                  <span>{type}</span>
+                </label>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Filter - Price Range Slider */}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 select-none">
+            <span>Price Range</span>
+            <IoOptionsOutline className="text-slate-500" />
+          </div>
+          <div className="flex flex-col gap-2">
+            <input 
+              type="range" 
+              min={30000} 
+              max={150000} 
+              step={5000} 
+              value={maxPrice} 
+              onChange={(e) => setMaxPrice(Number(e.target.value))} 
+              className="w-full h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 rounded-lg appearance-none cursor-pointer accent-purple-500"
+            />
+            <div className="flex justify-between text-xs font-mono text-slate-400 mt-2 select-none">
+              <span>Rs 30k</span>
+              <span>-</span>
+              <span>Rs {(maxPrice / 1000).toFixed(0)}k+</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Filter - Brand Dropdown */}
+        <div className="flex flex-col gap-2 relative">
+          <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-slate-400 mb-1 select-none">
+            <span>Brand</span>
+            <span className="text-[10px] text-purple-400">ⓘ</span>
+          </div>
+          <div className="relative">
+            <select 
+              value={selectedBrand}
+              onChange={(e) => setSelectedBrand(e.target.value)}
+              className="w-full bg-slate-900/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white appearance-none outline-none focus:border-purple-500/50 cursor-pointer"
+            >
+              {brandsList.map((brand) => (
+                <option key={brand} value={brand} className="bg-slate-950 text-white">
+                  {brand}
+                </option>
+              ))}
+            </select>
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">▼</div>
+          </div>
+        </div>
+
+      </aside>
+
+      {/* ================= RIGHT MAIN CONTENT AREA ================= */}
+      <div className="flex-grow flex flex-col gap-8 relative z-10 w-full">
+        
+        {/* Top Search Row */}
         <div className="flex flex-col md:flex-row gap-4 items-center w-full">
-          <div className="relative w-full flex-1">
-            <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl transition-colors group-focus-within:text-accent-cyan" />
+          {/* Search Input Box */}
+          <div className="relative w-full flex-grow">
+            <IoSearchOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-xl" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search cars by make, model, category..."
-              className="w-full bg-slate-950/60 border border-white/10 rounded-xl pl-12 pr-4 py-3.5 focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 outline-none transition-all duration-300 text-white placeholder-text-muted/65 text-sm"
+              placeholder="Search..."
+              className="w-full bg-slate-900/40 border border-white/10 rounded-full pl-12 pr-4 py-3 focus:border-purple-500/50 focus:ring-4 focus:ring-purple-500/5 outline-none transition-all duration-300 text-white placeholder-slate-500 text-sm"
             />
           </div>
-
-          <div className="relative w-full md:w-64">
-            <IoSwapVerticalOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-lg pointer-events-none" />
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="w-full bg-slate-950/60 border border-white/10 rounded-xl pl-12 pr-10 py-3.5 focus:border-accent-cyan focus:ring-4 focus:ring-accent-cyan/10 outline-none transition-all duration-300 text-white appearance-none cursor-pointer text-sm"
-            >
-              <option value="price-asc" className="bg-slate-900">Price: Low to High</option>
-              <option value="price-desc" className="bg-slate-900">Price: High to Low</option>
-              <option value="name-asc" className="bg-slate-900">Alphabetical (A-Z)</option>
-            </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted text-xs">▼</div>
-          </div>
         </div>
 
-        <hr className="border-white/5" />
-
-        {/* Row 2: Categorization Filters */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Category Type Filter */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Vehicle Class</span>
-            <div className="flex flex-wrap gap-2">
-              {vehicleTypes.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type)}
-                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
-                    selectedType === type
-                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
-                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+        {/* Database Status Alert */}
+        <div className="w-full">
+          {isMock ? (
+            <div className="inline-flex items-center gap-2 bg-yellow-500/5 border border-yellow-500/10 px-4 py-2.5 rounded-xl text-xs text-yellow-400 select-none">
+              <IoCloudOfflineOutline className="text-sm animate-pulse" />
+              <span>Offline sandbox mock data active.</span>
             </div>
-          </div>
-
-          {/* Fuel Type Filter */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Propulsion System</span>
-            <div className="flex flex-wrap gap-2">
-              {fuelTypes.map((fuel) => (
-                <button
-                  key={fuel}
-                  onClick={() => setSelectedFuel(fuel)}
-                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
-                    selectedFuel === fuel
-                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
-                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
-                  }`}
-                >
-                  {fuel}
-                </button>
-              ))}
+          ) : (
+            <div className="inline-flex items-center gap-2 bg-green-500/5 border border-green-500/10 px-4 py-2.5 rounded-xl text-xs text-green-400 select-none">
+              <IoCloudDoneOutline className="text-sm animate-bounce" />
+              <span>Supabase cloud database synced.</span>
             </div>
-          </div>
-
-          {/* Availability Status Filter */}
-          <div className="flex flex-col gap-2">
-            <span className="text-[10px] text-text-muted font-bold uppercase tracking-wider block mb-1">Fleet Status</span>
-            <div className="flex flex-wrap gap-2">
-              {statusTypes.map((status) => (
-                <button
-                  key={status.value}
-                  onClick={() => setSelectedStatus(status.value)}
-                  className={`text-xs font-semibold px-4 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
-                    selectedStatus === status.value
-                      ? 'bg-gradient-to-r from-accent-cyan/25 to-accent-purple/25 border-accent-cyan text-white shadow-lg shadow-accent-cyan/5'
-                      : 'border-white/5 hover:border-white/15 text-text-muted hover:text-white bg-slate-900/30'
-                  }`}
-                >
-                  {status.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          )}
         </div>
 
-        {/* Filters Summary / Reset */}
-        {(searchQuery || selectedType !== 'All' || selectedStatus !== 'All' || selectedFuel !== 'All') && (
-          <div className="flex justify-between items-center bg-blue-500/5 border border-blue-500/10 p-3.5 rounded-xl mt-2 text-xs">
-            <span className="text-text-muted">
-              Active filters showing <strong className="text-white">{filteredAndSortedCars.length}</strong> vehicles.
+        {/* Results Counter / Reset triggers */}
+        {(searchQuery || selectedTypes.length > 0 || maxPrice < 150000 || selectedBrand !== 'All' || selectedLocation !== 'Mumbai') && (
+          <div className="flex justify-between items-center bg-purple-500/5 border border-purple-500/10 p-3.5 rounded-xl text-xs select-none">
+            <span className="text-slate-400">
+              Active filters displaying <strong className="text-white">{filteredAndSortedCars.length}</strong> vehicles.
             </span>
             <button
               onClick={resetFilters}
-              className="text-accent-cyan font-bold hover:underline transition-colors cursor-pointer"
+              className="text-purple-400 font-bold hover:underline transition-colors cursor-pointer"
             >
               Reset Filters
             </button>
           </div>
         )}
-      </div>
 
-      {/* ================= INVENTORY GRID ================= */}
-      <div className="relative z-10">
-        {loading ? (
-          /* Premium Shimmer Skeleton Grid */
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[1, 2, 3, 4, 5, 6].map((skel) => (
-              <div key={skel} className="card-glass rounded-3xl overflow-hidden flex flex-col h-full p-6 gap-6">
-                <div className="h-52 -mx-6 -mt-6 rounded-b-none bg-white/5 border-b border-white/5 shimmer-placeholder"></div>
-                <div className="flex flex-col gap-6 flex-grow justify-between">
-                  <div className="flex flex-col gap-5">
-                    <div className="flex justify-between items-start gap-4">
-                      <div className="flex flex-col gap-2.5 w-full">
-                        <div className="h-3.5 w-16 rounded-md bg-white/5 shimmer-placeholder"></div>
-                        <div className="h-6 w-3/4 rounded-md bg-white/5 shimmer-placeholder"></div>
+        {/* Inventory Grid Section */}
+        <div>
+          {loading ? (
+            /* Premium Shimmer Skeleton Grid */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((skel) => (
+                <div key={skel} className="card-glass rounded-3xl overflow-hidden flex flex-col h-full p-6 gap-6">
+                  <div className="h-52 -mx-6 -mt-6 rounded-b-none bg-white/5 border-b border-white/5 shimmer-placeholder"></div>
+                  <div className="flex flex-col gap-6 flex-grow justify-between">
+                    <div className="flex flex-col gap-5">
+                      <div className="flex justify-between items-start gap-4">
+                        <div className="flex flex-col gap-2.5 w-full">
+                          <div className="h-3.5 w-16 rounded-md bg-white/5 shimmer-placeholder"></div>
+                          <div className="h-6 w-3/4 rounded-md bg-white/5 shimmer-placeholder"></div>
+                        </div>
+                        <div className="h-6 w-16 rounded-md bg-white/5 shimmer-placeholder shrink-0"></div>
                       </div>
-                      <div className="h-6 w-16 rounded-md bg-white/5 shimmer-placeholder shrink-0"></div>
+                      <div className="grid grid-cols-2 gap-4 border-y border-white/5 py-4 my-1">
+                        <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
+                        <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
+                      </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-4 border-y border-white/5 py-4 my-1">
-                      <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
-                      <div className="h-8 rounded-xl bg-white/5 shimmer-placeholder"></div>
-                    </div>
+                    <div className="h-12 w-full rounded-xl bg-white/5 shimmer-placeholder mt-4"></div>
                   </div>
-                  <div className="h-12 w-full rounded-xl bg-white/5 shimmer-placeholder mt-4"></div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <AnimatePresence mode="popLayout">
-            {filteredAndSortedCars.length > 0 ? (
-              <motion.div 
-                layout
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-              >
-                {filteredAndSortedCars.map((car) => (
-                  <CarCard key={car.id} car={car} onBook={handleBook} />
-                ))}
-              </motion.div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="text-center py-20 card-glass rounded-3xl border border-white/5"
-              >
-                <IoFunnelOutline className="text-7xl text-text-muted/20 mx-auto mb-4 animate-bounce" />
-                <h3 className="text-2xl font-bold mb-2">No Vehicles Match Your Query</h3>
-                <p className="text-text-muted text-sm mb-6 max-w-md mx-auto">
-                  Try loosening your active filters or clear search characters to discover additional options.
-                </p>
-                <button
-                  onClick={resetFilters}
-                  className="btn-premium btn-premium-hover px-6 py-2.5 rounded-xl font-bold font-sans"
+              ))}
+            </div>
+          ) : (
+            <AnimatePresence mode="popLayout">
+              {filteredAndSortedCars.length > 0 ? (
+                <motion.div 
+                  layout
+                  className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 animate-fade-in"
                 >
-                  Clear All Filters
-                </button>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        )}
+                  {filteredAndSortedCars.map((car) => (
+                    <CarCard key={car.id} car={car} onBook={handleBook} />
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="text-center py-20 card-glass rounded-3xl border border-white/5"
+                >
+                  <IoFunnelOutline className="text-7xl text-slate-500/20 mx-auto mb-4 animate-bounce" />
+                  <h3 className="text-2xl font-bold mb-2">No Vehicles Found</h3>
+                  <p className="text-slate-400 text-sm mb-6 max-w-md mx-auto">
+                    Try clearing search characters or resetting filters to view the fleet list.
+                  </p>
+                  <button
+                    onClick={resetFilters}
+                    className="px-6 py-3 rounded-full bg-purple-500/10 border border-purple-500/30 text-white font-bold hover:bg-purple-500/20 transition-all font-sans cursor-pointer shadow-md"
+                  >
+                    Reset Filters
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          )}
+        </div>
+
       </div>
 
       {/* Interactive Booking Modal Layer */}

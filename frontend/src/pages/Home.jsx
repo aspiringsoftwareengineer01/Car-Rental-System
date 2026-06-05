@@ -10,7 +10,8 @@ import {
   IoSparklesOutline,
   IoStar,
   IoChevronForwardOutline,
-  IoFingerPrintOutline
+  IoFingerPrintOutline,
+  IoPersonOutline
 } from 'react-icons/io5';
 import { getCarImage } from '../utils/carImages';
 
@@ -62,9 +63,81 @@ export default function Home() {
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-blue-600/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute top-1/3 right-1/4 w-[600px] h-[600px] bg-purple-600/5 rounded-full blur-[140px] pointer-events-none"></div>
 
+      {/* Laser neon light graphics in the background (visual matches from reference image) */}
+      <div className="absolute top-[-10%] right-[-10%] w-[1px] h-[140%] bg-gradient-to-b from-transparent via-cyan-400 to-transparent rotate-[35deg] blur-[2px] opacity-40 pointer-events-none"></div>
+      <div className="absolute top-[20%] left-[-5%] w-[2px] h-[120%] bg-gradient-to-t from-transparent via-purple-500 to-transparent rotate-[-40deg] blur-[3px] opacity-50 pointer-events-none"></div>
+      <div className="absolute bottom-[-10%] right-[20%] w-[1px] h-[100%] bg-gradient-to-t from-transparent via-blue-400 to-transparent rotate-[55deg] blur-[1px] opacity-35 pointer-events-none"></div>
+
       {/* ================= HERO SECTION ================= */}
-      <section className="relative pt-20 pb-32 px-6 max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16 min-h-[90vh]">
-        <div className="flex-1 flex flex-col items-start text-left z-10">
+      <section className="relative pt-20 pb-32 px-6 max-w-7xl mx-auto flex flex-col-reverse lg:flex-row items-center gap-16 min-h-[90vh]">
+        {/* Left Column: Featured Showcase Card */}
+        <div className="flex-1 w-full relative z-10 flex justify-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="w-full max-w-md relative group"
+          >
+            {/* The Neon Glow Background Shadow (Vivid Neon Lighting Effect) */}
+            <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 rounded-[2.1rem] blur-2xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 pointer-events-none"></div>
+
+            {/* The Card Container with a 1px Neon Gradient Border */}
+            <div className="relative p-[1px] bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-[2rem]">
+              {/* Inner Card Content */}
+              <div className="relative bg-slate-950/95 backdrop-blur-xl p-6 rounded-[1.95rem] flex flex-col justify-between h-full overflow-hidden">
+                {/* Visual ambient shine inside the card */}
+                <div className="absolute top-0 right-0 w-44 h-44 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                {/* Graphic Silhouette (Seamless Showcase Card Image) */}
+                <div className="relative w-full h-56 md:h-64 rounded-2xl overflow-hidden bg-slate-900/60 mb-6">
+                  {/* Soft Vignette Overlay to blend the image seamlessly */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-slate-950/20 z-20 pointer-events-none" />
+                  <img
+                    src="/images/porsche_911.png"
+                    alt="Porsche 911"
+                    className="w-full h-full object-cover z-10 filter drop-shadow-[0_15px_30px_rgba(0,180,255,0.25)] select-none pointer-events-none group-hover:scale-105 transition-transform duration-700"
+                  />
+                </div>
+
+                {/* Title & Carrera Subtitle */}
+                <div className="text-center mb-6 z-10">
+                  <h3 className="text-3xl font-black tracking-tight text-white font-display">PORSCHE 911</h3>
+                  <p className="text-xs text-cyan-400 font-mono tracking-[0.25em] font-bold mt-1.5 uppercase">CARRERA 4S</p>
+                </div>
+
+                {/* Performance specs row */}
+                <div className="grid grid-cols-3 border-t border-white/5 pt-4 pb-6 text-center text-sm font-sans gap-2 z-10">
+                  <div className="flex flex-col items-center">
+                    <IoFlashOutline className="text-cyan-400 text-lg mb-1" />
+                    <span className="text-[10px] text-text-muted block uppercase mb-0.5">Power</span>
+                    <span className="text-xs font-bold text-white">379 HP</span>
+                  </div>
+                  <div className="flex flex-col items-center border-x border-white/5">
+                    <IoSpeedometerOutline className="text-cyan-400 text-lg mb-1" />
+                    <span className="text-[10px] text-text-muted block uppercase mb-0.5">Acceleration</span>
+                    <span className="text-xs font-bold text-white">0-60 in 3.8s</span>
+                  </div>
+                  <div className="flex flex-col items-center">
+                    <IoPersonOutline className="text-cyan-400 text-lg mb-1" />
+                    <span className="text-[10px] text-text-muted block uppercase mb-0.5">Capacity</span>
+                    <span className="text-xs font-bold text-white">2 Seats</span>
+                  </div>
+                </div>
+
+                {/* Quick booking link action */}
+                <Link
+                  to="/cars/c_porsche_911"
+                  className="w-full py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-center text-xs tracking-widest uppercase transition-all duration-300 shadow-[0_0_20px_rgba(6,182,212,0.4)] block hover:scale-[1.02] z-10"
+                >
+                  Book This Car
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Right Column: Hero Text & Actions */}
+        <div className="flex-1 flex flex-col items-start text-left z-10 w-full">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -77,96 +150,63 @@ export default function Home() {
             <span>Introducing The Future of Car Rental</span>
           </motion.div>
 
-          <motion.h1
+          {/* Heading + Side Bullets Layout */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.08] mb-8 font-display"
+            className="flex flex-col lg:flex-row lg:items-center justify-between w-full gap-8 mb-8"
           >
-            Evolve Your <br />
-            <span className="bg-gradient-to-r from-blue-400 via-white to-blue-600 bg-clip-text text-transparent">
-              Travel Standard.
-            </span>
-          </motion.h1>
+            <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.05] font-display flex-grow">
+              <span className="bg-gradient-to-r from-blue-400 via-purple-400 to-purple-600 bg-clip-text text-transparent block">
+                EVOLVE
+              </span>
+              <span className="text-white block">
+                YOUR TRAVEL
+              </span>
+              <span className="text-white block">
+                STANDARD
+              </span>
+            </h1>
+
+            <div className="hidden lg:flex items-stretch border-l border-white/20 pl-6 py-2 select-none shrink-0">
+              <div className="flex flex-col justify-between text-[11px] font-mono tracking-widest text-slate-400 space-y-3 uppercase">
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full inline-block"></span>
+                  <span>Rental Without Boundaries</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full inline-block"></span>
+                  <span>Premium Service</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full inline-block"></span>
+                  <span>Exclusive Access</span>
+                </p>
+              </div>
+            </div>
+          </motion.div>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="text-lg text-text-muted max-w-xl mb-10 leading-relaxed font-sans"
+            className="text-sm md:text-base font-semibold tracking-wider text-slate-400 max-w-xl mb-10 leading-relaxed font-sans uppercase"
           >
-            Gain instant access to a curated digital garage of high-performance electrics, hyper sports, and executive SUVs. Experience 100% contactless pickup.
+            Experience unmatched luxury & performance. Discover our elite fleet of exotic vehicles.
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.45 }}
-            className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
           >
-            <Link to="/cars" className="btn-premium btn-premium-hover flex items-center justify-center gap-2 group text-base font-bold shadow-2xl shadow-blue-500/20">
-              <span>Command the Road</span>
-              <IoChevronForwardOutline className="group-hover:translate-x-1 transition-transform" />
+            <Link
+              to="/cars"
+              className="inline-block px-8 py-4 rounded-full border border-purple-500/80 bg-purple-500/10 text-white hover:bg-purple-500/25 transition-all duration-300 font-bold tracking-widest text-xs uppercase shadow-[0_0_20px_rgba(168,85,247,0.35)] hover:-translate-y-0.5"
+            >
+              Explore Fleet
             </Link>
-            <Link to="/booking" className="px-6 py-3.5 rounded-xl border border-white/10 bg-white/5 backdrop-blur-md hover:bg-white/10 hover:border-white/20 transition-all duration-300 font-semibold text-center text-sm">
-              Quick Reserve
-            </Link>
-          </motion.div>
-        </div>
-
-        {/* Hero Visual Spotlight */}
-        <div className="flex-1 w-full relative z-10">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="w-full relative card-glass p-6 rounded-3xl overflow-hidden aspect-[4/3] flex flex-col justify-between"
-          >
-            {/* Visual ambient shine */}
-            <div className="absolute top-0 right-0 w-44 h-44 bg-blue-500/20 rounded-full blur-3xl"></div>
-
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-[10px] bg-white/10 border border-white/20 px-3 py-1 rounded-full text-white font-mono uppercase tracking-widest">
-                  Featured Showcase
-                </span>
-                <h3 className="text-3xl font-black mt-3 mb-1">Porsche 911</h3>
-                <p className="text-text-muted text-xs">Model Year 2026 • Paint Acid Green</p>
-              </div>
-              <div className="text-right">
-                <span className="text-xs text-text-muted block">RATES START FROM</span>
-                <span className="text-2xl font-extrabold text-blue-400 font-display">Rs 5280 <span className="text-xs text-text-muted font-normal">/ day</span></span>
-              </div>
-            </div>
-
-            {/* Graphic Silhouette (Seamless Showcase) */}
-            <div className="my-8 flex justify-center items-center relative py-6 overflow-hidden rounded-2xl h-52 bg-slate-950/40">
-              {/* Soft Vignette Overlay to blend the square image background seamless into the Card */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-slate-950 z-20 pointer-events-none" />
-              <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-slate-950/80 to-transparent z-20 pointer-events-none" />
-              <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-slate-950/80 to-transparent z-20 pointer-events-none" />
-
-              <img
-                src="/images/porsche_911.png"
-                alt="Porsche 911"
-                className="w-full h-full object-cover z-10 filter drop-shadow-[0_15px_30px_rgba(0,180,255,0.25)] select-none pointer-events-none hover:scale-105 transition-transform duration-700"
-              />
-            </div>
-
-            <div className="grid grid-cols-3 border-t border-white/5 pt-4 text-center">
-              <div>
-                <span className="text-[10px] text-text-muted block uppercase">Max Speed</span>
-                <span className="text-sm font-extrabold text-white">197 mph</span>
-              </div>
-              <div className="border-x border-white/5">
-                <span className="text-[10px] text-text-muted block uppercase">Acceleration</span>
-                <span className="text-sm font-extrabold text-white">3.0s</span>
-              </div>
-              <div>
-                <span className="text-[10px] text-text-muted block uppercase">Transmission</span>
-                <span className="text-sm font-extrabold text-white">PDK Auto</span>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -192,67 +232,76 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className={`group card-glass rounded-3xl overflow-hidden hover:border-blue-500/40 hover:shadow-2xl ${car.glowColor} transition-all duration-300`}
+              className="relative group w-full"
             >
-              {/* Image box (True Full-Bleed Studio Integration) */}
-              <div className="h-56 bg-slate-950 relative overflow-hidden">
-                {/* Soft Multi-Directional Vignette Gradients to blend image into Card UI */}
-                {/* Bottom soft edge blend */}
-                <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-20 pointer-events-none" />
+              {/* Neon Glow Background Shadow (Vivid Neon Lighting Effect) */}
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-600 rounded-[2.1rem] blur-xl opacity-40 group-hover:opacity-85 transition duration-700 pointer-events-none"></div>
 
-                {/* Top soft edge blend */}
-                <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950 via-slate-950/40 to-transparent z-20 pointer-events-none" />
+              {/* 1px Neon Gradient Border wrapper */}
+              <div className="relative p-[1px] bg-gradient-to-r from-blue-500/50 via-indigo-500/50 to-purple-500/50 group-hover:from-blue-400 group-hover:via-indigo-500 group-hover:to-purple-500 rounded-[2rem] transition-all duration-300 h-full">
+                {/* Inner Card Content */}
+                <div className="relative bg-slate-950/95 backdrop-blur-xl rounded-[1.95rem] overflow-hidden flex flex-col justify-between h-full">
+                  {/* Image box (True Full-Bleed Studio Integration) */}
+                  <div className="h-56 bg-slate-950 relative overflow-hidden">
+                    {/* Soft Multi-Directional Vignette Gradients to blend image into Card UI */}
+                    {/* Bottom soft edge blend */}
+                    <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent z-20 pointer-events-none" />
 
-                {/* Left soft edge blend */}
-                <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-slate-950/50 to-transparent z-20 pointer-events-none" />
+                    {/* Top soft edge blend */}
+                    <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-slate-950 via-slate-950/40 to-transparent z-20 pointer-events-none" />
 
-                {/* Right soft edge blend */}
-                <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-slate-950/50 to-transparent z-20 pointer-events-none" />
+                    {/* Left soft edge blend */}
+                    <div className="absolute top-0 bottom-0 left-0 w-8 bg-gradient-to-r from-slate-950/50 to-transparent z-20 pointer-events-none" />
 
-                <div className="absolute top-4 left-4 bg-slate-950/85 border border-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold z-30 select-none">
-                  {car.imageText}
-                </div>
-                <img
-                  src={getCarImage(car.id)}
-                  alt={`${car.make} ${car.model}`}
-                  className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
-                />
-              </div>
+                    {/* Right soft edge blend */}
+                    <div className="absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-slate-950/50 to-transparent z-20 pointer-events-none" />
 
-              {/* Specs and names */}
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <span className="text-[10px] text-blue-400 font-semibold uppercase">{car.type}</span>
-                    <h3 className="text-2xl font-bold text-white mt-1">{car.make} <span className="font-normal text-slate-300">{car.model}</span></h3>
-                  </div>
-                  <div className="text-right">
-                    <span className="text-2xl font-black text-white">Rs {car.price}</span>
-                    <span className="text-[10px] text-text-muted block font-normal">/ day</span>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4 border-y border-white/5 py-4 my-6 text-sm">
-                  <div className="flex items-center gap-2">
-                    <IoFlashOutline className="text-blue-400 text-lg" />
-                    <div>
-                      <span className="text-[10px] text-text-muted block uppercase">Accel</span>
-                      <span className="font-semibold text-white">{car.acceleration}</span>
+                    <div className="absolute top-4 left-4 bg-slate-950/85 border border-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold z-30 select-none">
+                      {car.imageText}
                     </div>
+                    <img
+                      src={getCarImage(car.id)}
+                      alt={`${car.make} ${car.model}`}
+                      className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
+                    />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <IoSpeedometerOutline className="text-blue-400 text-lg" />
-                    <div>
-                      <span className="text-[10px] text-text-muted block uppercase">Rating / Hp</span>
-                      <span className="font-semibold text-white">{car.range}</span>
+
+                  {/* Specs and names */}
+                  <div className="p-8">
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <span className="text-[10px] text-blue-400 font-semibold uppercase">{car.type}</span>
+                        <h3 className="text-2xl font-bold text-white mt-1">{car.make} <span className="font-normal text-slate-300">{car.model}</span></h3>
+                      </div>
+                      <div className="text-right">
+                        <span className="text-2xl font-black text-white">Rs {car.price}</span>
+                        <span className="text-[10px] text-text-muted block font-normal">/ day</span>
+                      </div>
                     </div>
+
+                    <div className="grid grid-cols-2 gap-4 border-y border-white/5 py-4 my-6 text-sm">
+                      <div className="flex items-center gap-2">
+                        <IoFlashOutline className="text-blue-400 text-lg" />
+                        <div>
+                          <span className="text-[10px] text-text-muted block uppercase">Accel</span>
+                          <span className="font-semibold text-white">{car.acceleration}</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <IoSpeedometerOutline className="text-blue-400 text-lg" />
+                        <div>
+                          <span className="text-[10px] text-text-muted block uppercase">Rating / Hp</span>
+                          <span className="font-semibold text-white">{car.range}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <Link to={`/cars/${car.id}`} className="w-full btn-premium btn-premium-hover py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-bold shadow-md">
+                      <span>Car Detail</span>
+                      <IoChevronForwardOutline />
+                    </Link>
                   </div>
                 </div>
-
-                <Link to={`/cars/${car.id}`} className="w-full btn-premium btn-premium-hover py-3 rounded-xl flex items-center justify-center gap-2 text-sm font-bold shadow-md">
-                  <span>Reserve Vehicle</span>
-                  <IoChevronForwardOutline />
-                </Link>
               </div>
             </motion.div>
           ))}

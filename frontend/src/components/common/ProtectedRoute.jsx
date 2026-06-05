@@ -24,7 +24,7 @@ export default function ProtectedRoute({ children, adminOnly = false }) {
           </div>
           <div>
             <h3 className="text-lg font-bold text-white mb-1">Verifying Credentials</h3>
-            <p className="text-text-muted text-xs">Securing session connection to Antigravity Services...</p>
+            <p className="text-text-muted text-xs">Securing session connection to Car Rental System Services...</p>
           </div>
         </div>
       </div>

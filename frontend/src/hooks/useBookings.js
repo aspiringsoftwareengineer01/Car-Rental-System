@@ -101,7 +101,7 @@ export function useBookings() {
       pickupDate: bookingData.pickupDate,
       returnDate: bookingData.returnDate,
       totalPrice: Number(bookingData.totalPrice),
-      status: 'confirmed',
+      status: 'pending',
       createdAt: new Date().toISOString()
     };
 
@@ -128,7 +128,7 @@ export function useBookings() {
         allBookings.unshift(payload);
         localStorage.setItem('antigravity_bookings', JSON.stringify(allBookings));
         setBookings(prev => [payload, ...prev]);
-        toast.success('Vehicle reserved successfully! 🎉');
+        toast.success('Vehicle reserved successfully (pending verification)! ⌛');
         return { success: true, data: payload };
       } catch (err) {
         toast.error('Failed to store reservation.');
@@ -144,7 +144,7 @@ export function useBookings() {
         pickup_date: bookingData.pickupDate,
         return_date: bookingData.returnDate,
         total_price: Number(bookingData.totalPrice),
-        status: 'confirmed'
+        status: 'pending'
       };
 
       const { data, error } = await supabase
@@ -166,7 +166,7 @@ export function useBookings() {
         createdAt: inserted.created_at
       };
 
-      toast.success('Vehicle reserved successfully! 🎉');
+      toast.success('Vehicle reserved successfully (pending verification)! ⌛');
       fetchBookings(); // Reload
       return { success: true, data: formatted };
     } catch (err) {
@@ -230,9 +230,55 @@ export function useBookings() {
     }
   };
 
+  // Verify booking operation
+  const verifyBooking = async (bookingId) => {
+    if (!user) return { success: false };
+
+    if (!isSupabaseConfigured) {
+      // LocalStorage Engine
+      try {
+        const stored = localStorage.getItem('antigravity_bookings');
+        let allBookings = stored ? JSON.parse(stored) : [];
+        allBookings = allBookings.map(b => b.id === bookingId ? { ...b, status: 'confirmed' } : b);
+        localStorage.setItem('antigravity_bookings', JSON.stringify(allBookings));
+        setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'confirmed' } : b));
+        toast.success('Reservation verified successfully! 🎉');
+        return { success: true };
+      } catch (err) {
+        toast.error('Failed to verify reservation.');
+        return { success: false, error: err.message };
+      }
+    }
+
+    try {
+      const { error } = await supabase
+        .from('bookings')
+        .update({ status: 'confirmed' })
+        .eq('id', bookingId);
+
+      if (error) throw error;
+
+      toast.success('Reservation verified successfully! 🎉');
+      fetchBookings(); // Reload
+      return { success: true };
+    } catch (err) {
+      console.warn('Supabase verify failed, updating localStorage backup:', err.message);
+      
+      // Fallback
+      const stored = localStorage.getItem('antigravity_bookings');
+      let allBookings = stored ? JSON.parse(stored) : [];
+      allBookings = allBookings.map(b => b.id === bookingId ? { ...b, status: 'confirmed' } : b);
+      localStorage.setItem('antigravity_bookings', JSON.stringify(allBookings));
+      
+      setBookings(prev => prev.map(b => b.id === bookingId ? { ...b, status: 'confirmed' } : b));
+      toast.success('Reservation verified (offline sandbox backup). 🎉');
+      return { success: true };
+    }
+  };
+
   useEffect(() => {
     fetchBookings();
   }, [fetchBookings]);
 
-  return { bookings, loading, error, createBooking, cancelBooking, refetch: fetchBookings };
+  return { bookings, loading, error, createBooking, cancelBooking, verifyBooking, refetch: fetchBookings };
 }

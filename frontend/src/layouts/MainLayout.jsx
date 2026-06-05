@@ -10,6 +10,11 @@ export default function MainLayout() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Reset scroll position to top on page change
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [location.pathname]);
+
   useEffect(() => {
     if (!loading && isAdmin && location.pathname !== '/admin' && location.pathname !== '/dashboard') {
       navigate('/admin', { replace: true });
@@ -33,7 +38,7 @@ export default function MainLayout() {
       />
 
       {/* Sticky Premium Navigation */}
-      <Navbar />
+      {location.pathname !== '/dashboard' && <Navbar />}
 
       {/* Main Active Route View */}
       <main className="flex-grow">
@@ -41,7 +46,7 @@ export default function MainLayout() {
       </main>
 
       {/* Grid Footer */}
-      <Footer />
+      {location.pathname !== '/dashboard' && <Footer />}
     </div>
   );
 }
