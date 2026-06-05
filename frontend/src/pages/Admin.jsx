@@ -33,7 +33,7 @@ export default function Admin() {
   const [newCarType, setNewCarType] = useState('Electric');
   const [newCarFuel, setNewCarFuel] = useState('Electric');
   const [newCarSeats, setNewCarSeats] = useState(5);
-  const [newCarPrice, setNewCarPrice] = useState(150);
+  const [newCarPrice, setNewCarPrice] = useState(5000);
   const [isSubmittingCar, setIsSubmittingCar] = useState(false);
   const [validationError, setValidationError] = useState('');
 
@@ -78,8 +78,8 @@ export default function Admin() {
       return;
     }
 
-    if (Number(newCarPrice) < 50 || Number(newCarPrice) > 1000) {
-      setValidationError('Price daily rate must be configured between $50 and $1,000.');
+    if (Number(newCarPrice) < 5000 || Number(newCarPrice) > 50000) {
+      setValidationError('Price daily rate must be configured between Rs 5,000 and Rs 50,000.');
       return;
     }
 
@@ -110,7 +110,7 @@ export default function Admin() {
         setNewCarType('Electric');
         setNewCarFuel('Electric');
         setNewCarSeats(5);
-        setNewCarPrice(150);
+        setNewCarPrice(5000);
       } else {
         setValidationError(result.error || 'Failed to insert car credentials.');
       }
@@ -233,7 +233,7 @@ export default function Admin() {
                   <div className="card-glass p-6 rounded-2xl border-white/5 bg-slate-900/20 hover:border-green-400/35 hover:shadow-[0_0_15px_rgba(74,222,128,0.05)] transition-all duration-300">
                     <IoCashOutline className="text-3xl text-green-400 mb-3" />
                     <span className="text-[9px] text-text-muted font-bold block uppercase tracking-wider">Gross Income</span>
-                    <strong className="text-2xl font-black text-green-400 font-sans mt-1 block">${totalRevenue.toFixed(2)}</strong>
+                    <strong className="text-2xl font-black text-green-400 font-sans mt-1 block">Rs {totalRevenue.toFixed(2)}</strong>
                   </div>
                 </div>
 
@@ -256,7 +256,7 @@ export default function Admin() {
                           <div key={name}>
                             <div className="flex justify-between items-center text-xs font-bold mb-2">
                               <span className="text-text-muted">{name} Fleet Class</span>
-                              <span className="text-white font-sans">${value.toFixed(2)} ({percent.toFixed(0)}%)</span>
+                              <span className="text-white font-sans">Rs {value.toFixed(2)} ({percent.toFixed(0)}%)</span>
                             </div>
                             <div className="w-full bg-slate-950/60 rounded-full h-3.5 overflow-hidden border border-white/5 p-[2px]">
                               <div 
@@ -339,7 +339,7 @@ export default function Admin() {
                               {car.seats} Seats / {car.fuelType}
                             </td>
                             <td className="px-6 py-4 font-bold text-white font-sans">
-                              ${car.pricePerDay}
+                              Rs {car.pricePerDay}
                             </td>
                             <td className="px-6 py-4">
                               {car.status === 'available' && (
@@ -394,7 +394,7 @@ export default function Admin() {
                           </div>
                           <div>
                             <span className="block text-[9px] uppercase tracking-wider text-text-muted/70 mb-0.5">Daily Rate</span>
-                            <span className="font-semibold text-white font-sans">${car.pricePerDay}</span>
+                            <span className="font-semibold text-white font-sans">Rs {car.pricePerDay}</span>
                           </div>
                         </div>
                         
@@ -468,7 +468,7 @@ export default function Admin() {
                                 {b.pickupDate} to {b.returnDate}
                               </td>
                               <td className="px-6 py-4 font-bold text-white font-sans">
-                                ${Number(b.totalPrice).toFixed(2)}
+                                Rs {Number(b.totalPrice).toFixed(2)}
                               </td>
                               <td className="px-6 py-4">
                                 {b.status === 'confirmed' ? (
@@ -528,7 +528,7 @@ export default function Admin() {
                             </div>
                             <div>
                               <span className="block text-[9px] uppercase tracking-wider text-text-muted/70 mb-0.5">Surcharge</span>
-                              <strong className="text-white font-sans">${Number(b.totalPrice).toFixed(2)}</strong>
+                              <strong className="text-white font-sans">Rs {Number(b.totalPrice).toFixed(2)}</strong>
                             </div>
                           </div>
                           
@@ -667,13 +667,13 @@ export default function Admin() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] text-text-muted font-bold uppercase tracking-wider mb-2">Daily Price Surcharge ($)</label>
+                  <label className="block text-[10px] text-text-muted font-bold uppercase tracking-wider mb-2">Daily Price Surcharge (Rs)</label>
                   <input 
                     type="number"
                     value={newCarPrice}
                     onChange={(e) => setNewCarPrice(e.target.value)}
-                    min={50}
-                    max={1000}
+                    min={5000}
+                    max={50000}
                     disabled={isSubmittingCar}
                     required
                     className="w-full bg-slate-950/60 border border-white/5 rounded-xl px-4 py-3 outline-none text-white focus:border-accent-cyan transition-all text-sm font-sans"

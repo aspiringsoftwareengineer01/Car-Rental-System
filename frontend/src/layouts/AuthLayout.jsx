@@ -16,7 +16,7 @@ export default function AuthLayout() {
             <IoCarSport className="text-2xl" />
           </div>
           <span className="font-display font-black text-2xl tracking-tight text-white">
-            ANTIGRAVITY
+            Car Rental System
           </span>
         </Link>
         <Link to="/" className="inline-flex items-center gap-2 text-text-muted hover:text-white transition-colors duration-300 group text-sm font-semibold">
@@ -32,7 +32,7 @@ export default function AuthLayout() {
 
       {/* Simple footer note */}
       <div className="w-full text-center text-xs text-text-muted z-10">
-        <span>© {new Date().getFullYear()} Antigravity Rentals. Encrypted SSL Connection.</span>
+        <span>© {new Date().getFullYear()} Car Rental System. Encrypted SSL Connection.</span>
       </div>
     </div>
   );

@@ -180,7 +180,7 @@ export default function Booking() {
                       <div className="px-6 py-4 md:px-8 bg-slate-950/30 border-t border-white/5 flex items-center justify-between gap-4">
                         <div>
                           <span className="text-[9px] text-text-muted uppercase tracking-wider block">Total bill</span>
-                          <strong className="text-accent-cyan text-lg font-sans">${Number(booking.totalPrice).toFixed(2)}</strong>
+                          <strong className="text-accent-cyan text-lg font-sans">Rs {Number(booking.totalPrice).toFixed(2)}</strong>
                         </div>
                         <button
                           onClick={() => handleCancelClick(booking.id)}
@@ -224,7 +224,7 @@ export default function Booking() {
                     </div>
                     <div className="flex sm:flex-col items-end justify-between sm:justify-center w-full sm:w-auto border-t sm:border-none border-white/5 pt-3 sm:pt-0">
                       <span className="text-text-muted text-[10px] font-mono tracking-wider">{booking.id}</span>
-                      <strong className="text-white text-sm font-sans mt-0.5">${Number(booking.totalPrice).toFixed(2)}</strong>
+                      <strong className="text-white text-sm font-sans mt-0.5">Rs {Number(booking.totalPrice).toFixed(2)}</strong>
                     </div>
                   </div>
                 ))}

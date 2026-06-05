@@ -67,12 +67,36 @@ export function AuthProvider({ children }) {
   const signIn = async (email, password) => {
     setLoading(true);
     if (!isSupabaseConfigured) {
+      const specialPassKey = `car_rental_special_pass_${email.toLowerCase()}`;
+      const savedPass = localStorage.getItem(specialPassKey);
+      const expectedPass = savedPass || 'password';
+
+      // Demo authentication bypass for admin account
+      if (email === 'admin@example.com' && password === expectedPass) {
+        const specialNameKey = `car_rental_special_name_${email.toLowerCase()}`;
+        const savedName = localStorage.getItem(specialNameKey) || 'System Admin';
+
+        const mockUser = {
+          id: 'u_mock_admin',
+          email: 'admin@example.com',
+          user_metadata: { name: savedName, role: 'admin' }
+        };
+        setUser(mockUser);
+        localStorage.setItem(MOCK_SESSION_KEY, JSON.stringify(mockUser));
+        setLoading(false);
+        toast.success('Signed in successfully as Admin! 🛠️');
+        return { success: true, data: { user: mockUser, session: { user: mockUser } } };
+      }
+
       // Demo authentication bypass for main guest account
-      if (email === 'demo@example.com' && password === 'password') {
+      if (email === 'demo@example.com' && password === expectedPass) {
+        const specialNameKey = `car_rental_special_name_${email.toLowerCase()}`;
+        const savedName = localStorage.getItem(specialNameKey) || 'Alex Mercer (Guest)';
+
         const mockUser = {
           id: 'u_mock_123',
           email: 'demo@example.com',
-          user_metadata: { name: 'Alex Mercer (Guest)' }
+          user_metadata: { name: savedName, role: 'user' }
         };
         setUser(mockUser);
         localStorage.setItem(MOCK_SESSION_KEY, JSON.stringify(mockUser));
@@ -127,7 +151,7 @@ export function AuthProvider({ children }) {
           email,
           password,
           options: {
-            data: { name }
+            data: { name, role: 'user' }
           }
         });
         if (error) throw error;
@@ -158,7 +182,7 @@ export function AuthProvider({ children }) {
         id: 'u_mock_' + Math.random().toString(36).substring(2, 11),
         email,
         password,
-        user_metadata: { name }
+        user_metadata: { name, role: 'user' }
       };
 
       saveMockUser(mockUser);
@@ -197,8 +221,94 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const updateProfile = async ({ name, password }) => {
+    setLoading(true);
+    if (!isSupabaseConfigured) {
+      try {
+        const updatedUser = { ...user };
+        if (!updatedUser.user_metadata) {
+          updatedUser.user_metadata = {};
+        }
+
+        if (name) {
+          updatedUser.user_metadata.name = name;
+        }
+
+        setUser(updatedUser);
+        localStorage.setItem(MOCK_SESSION_KEY, JSON.stringify(updatedUser));
+
+        if (password) {
+          const mockUsers = getMockUsers();
+          const userIndex = mockUsers.findIndex(u => u.email.toLowerCase() === user.email.toLowerCase());
+
+          if (userIndex !== -1) {
+            mockUsers[userIndex].password = password;
+            if (name) mockUsers[userIndex].user_metadata = { ...mockUsers[userIndex].user_metadata, name };
+            localStorage.setItem(MOCK_USERS_KEY, JSON.stringify(mockUsers));
+          } else {
+            const specialPassKey = `car_rental_special_pass_${user.email.toLowerCase()}`;
+            localStorage.setItem(specialPassKey, password);
+            if (name) {
+              const specialNameKey = `car_rental_special_name_${user.email.toLowerCase()}`;
+              localStorage.setItem(specialNameKey, name);
+            }
+          }
+        } else if (name) {
+          const mockUsers = getMockUsers();
+          const userIndex = mockUsers.findIndex(u => u.email.toLowerCase() === user.email.toLowerCase());
+          if (userIndex !== -1) {
+            mockUsers[userIndex].user_metadata = { ...mockUsers[userIndex].user_metadata, name };
+            localStorage.setItem(MOCK_USERS_KEY, JSON.stringify(mockUsers));
+          } else {
+            const specialNameKey = `car_rental_special_name_${user.email.toLowerCase()}`;
+            localStorage.setItem(specialNameKey, name);
+          }
+        }
+
+        setLoading(false);
+        toast.success('Profile updated successfully (Demo Mode)! 👤');
+        return { success: true };
+      } catch (err) {
+        setLoading(false);
+        toast.error('Failed to update profile');
+        return { success: false, error: err.message };
+      }
+    }
+
+    try {
+      const updates = {};
+      if (name) {
+        updates.data = { name };
+      }
+      if (password) {
+        updates.password = password;
+      }
+
+      const { data, error } = await supabase.auth.updateUser(updates);
+      if (error) throw error;
+
+      setUser(data.user);
+      toast.success('Profile updated successfully! 👤');
+      setLoading(false);
+      return { success: true, data };
+    } catch (err) {
+      toast.error(err.message || 'Failed to update profile');
+      setLoading(false);
+      return { success: false, error: err.message };
+    }
+  };
+
+  const isAdmin = !!(
+    user && (
+      user.user_metadata?.role === 'admin' ||
+      user.app_metadata?.role === 'admin' ||
+      user.email === 'admin@example.com' ||
+      user.email?.startsWith('admin@')
+    )
+  );
+
   return (
-    <AuthContext.Provider value={{ user, loading, isDemo, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{ user, loading, isDemo, signIn, signUp, signOut, isAdmin, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

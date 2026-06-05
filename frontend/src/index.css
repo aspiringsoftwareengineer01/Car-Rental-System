@@ -26,7 +26,11 @@
   }
   
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-bold tracking-tight text-white;
+    @apply font-display font-bold tracking-tight text-text-main;
+  }
+
+  input[type="date"] {
+    color-scheme: dark;
   }
 }
 
@@ -114,5 +118,57 @@
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
     background: var(--color-accent-cyan);
   }
+}
+
+/* Premium Light Theme System Overrides */
+.light {
+  /* Core Color HSL variables */
+  --color-bg-deep: hsl(210, 40%, 96%); 
+  --color-bg-surface: hsl(210, 40%, 100%); 
+  --color-accent-cyan: hsl(190, 95%, 42%); 
+  --color-accent-purple: hsl(262, 70%, 55%); 
+  --color-accent-coral: hsl(12, 85%, 52%); 
+  
+  --color-text-main: hsl(222, 47%, 12%); 
+  --color-text-muted: hsl(215, 15%, 45%); 
+  
+  --border-light: rgba(15, 23, 42, 0.08);
+  --border-glow: rgba(190, 95, 42, 0.15);
+
+  /* Invert core black and white for dynamic utilities */
+  --color-white: hsl(222, 47%, 12%); 
+  --color-black: hsl(210, 40%, 100%); 
+  
+  /* Invert Slate Color scale in light mode */
+  --color-slate-50: #020617;
+  --color-slate-100: #0f172a;
+  --color-slate-200: #1e293b;
+  --color-slate-300: #334155;
+  --color-slate-400: #475569;
+  --color-slate-500: #64748b;
+  --color-slate-600: #94a3b8;
+  --color-slate-700: #cbd5e1;
+  --color-slate-800: #e2e8f0;
+  --color-slate-900: #f1f5f9;
+  --color-slate-950: #f8fafc;
+}
+
+/* Select specific overrides for light mode components */
+.light input[type="date"] {
+  color-scheme: light;
+}
+
+.light .card-glass {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(15, 23, 42, 0.08);
+  box-shadow: 0 8px 32px 0 rgba(15, 23, 42, 0.06);
+}
+
+.light .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+.light .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(15, 23, 42, 0.15);
 }
 

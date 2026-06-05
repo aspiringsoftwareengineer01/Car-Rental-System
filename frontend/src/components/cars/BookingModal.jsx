@@ -206,7 +206,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                       </div>
                       <div>
                         <span className="text-text-muted text-xs block uppercase font-bold text-accent-cyan">Secured Receipt</span>
-                        <strong className="text-accent-cyan text-base font-sans">${bookingSuccess.totalPrice.toFixed(2)}</strong>
+                        <strong className="text-accent-cyan text-base font-sans">Rs {bookingSuccess.totalPrice.toFixed(2)}</strong>
                       </div>
                     </div>
                     <div className="border-t border-white/5 pt-3 text-[10px] text-text-muted flex justify-between">
@@ -329,7 +329,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                           <h4 className="text-xl font-bold text-white mt-1">{car.make} <span className="font-normal text-slate-300">{car.model}</span></h4>
                           <div className="flex justify-between items-center mt-3 text-xs">
                             <span className="text-text-muted">Daily Rate</span>
-                            <span className="text-white font-bold font-sans">${car.pricePerDay} / day</span>
+                            <span className="text-white font-bold font-sans">Rs {car.pricePerDay} / day</span>
                           </div>
                         </div>
 
@@ -344,11 +344,11 @@ export default function BookingModal({ car, isOpen, onClose }) {
                             </li>
                             <li className="flex justify-between">
                               <span className="text-text-muted">Subtotal fee</span>
-                              <span className="font-semibold text-white font-sans">${invoice.subtotal.toFixed(2)}</span>
+                              <span className="font-semibold text-white font-sans">Rs {invoice.subtotal.toFixed(2)}</span>
                             </li>
                             <li className="flex justify-between">
                               <span className="text-text-muted">Surcharge (VAT / Insurance 8%)</span>
-                              <span className="font-semibold text-white font-sans">${invoice.tax.toFixed(2)}</span>
+                              <span className="font-semibold text-white font-sans">Rs {invoice.tax.toFixed(2)}</span>
                             </li>
                           </ul>
                         ) : (
@@ -363,7 +363,7 @@ export default function BookingModal({ car, isOpen, onClose }) {
                       {rentalDays > 0 && (
                         <div className="flex justify-between items-center text-base font-bold mb-6 pt-2">
                           <span>Secured Bill</span>
-                          <span className="text-accent-cyan text-xl font-sans">${invoice.total.toFixed(2)}</span>
+                          <span className="text-accent-cyan text-xl font-sans">Rs {invoice.total.toFixed(2)}</span>
                         </div>
                       )}
 

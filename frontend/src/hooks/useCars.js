@@ -10,7 +10,7 @@ const MOCK_FLEET = [
     type: 'Electric',
     fuelType: 'Electric',
     seats: 5,
-    pricePerDay: 180,
+    pricePerDay: 5180,
     status: 'available',
   },
   {
@@ -20,7 +20,7 @@ const MOCK_FLEET = [
     type: 'Sports',
     fuelType: 'Gasoline',
     seats: 2,
-    pricePerDay: 280,
+    pricePerDay: 5280,
     status: 'available',
   },
   {
@@ -30,7 +30,7 @@ const MOCK_FLEET = [
     type: 'SUV',
     fuelType: 'Hybrid',
     seats: 7,
-    pricePerDay: 220,
+    pricePerDay: 5220,
     status: 'rented',
   },
   {
@@ -40,7 +40,7 @@ const MOCK_FLEET = [
     type: 'Electric',
     fuelType: 'Electric',
     seats: 5,
-    pricePerDay: 190,
+    pricePerDay: 5190,
     status: 'available',
   },
   {
@@ -50,7 +50,7 @@ const MOCK_FLEET = [
     type: 'Sports',
     fuelType: 'Gasoline',
     seats: 4,
-    pricePerDay: 170,
+    pricePerDay: 5170,
     status: 'available',
   },
   {
@@ -60,7 +60,7 @@ const MOCK_FLEET = [
     type: 'SUV',
     fuelType: 'Gasoline',
     seats: 5,
-    pricePerDay: 250,
+    pricePerDay: 5250,
     status: 'maintenance',
   },
   {
@@ -70,7 +70,7 @@ const MOCK_FLEET = [
     type: 'Electric',
     fuelType: 'Electric',
     seats: 5,
-    pricePerDay: 290,
+    pricePerDay: 5290,
     status: 'available',
   },
   {
@@ -80,7 +80,7 @@ const MOCK_FLEET = [
     type: 'Sports',
     fuelType: 'Gasoline',
     seats: 2,
-    pricePerDay: 380,
+    pricePerDay: 5380,
     status: 'available',
   }
 ];
@@ -97,12 +97,12 @@ export function useCars() {
 
     // Scenario A: Supabase is not configured -> Fallback to Mock / LocalStorage instantly
     if (!isSupabaseConfigured) {
-      const stored = localStorage.getItem('antigravity_cars');
+      const stored = localStorage.getItem('antigravity_cars_v2');
       if (stored) {
         setCars(JSON.parse(stored));
       } else {
         setCars(MOCK_FLEET);
-        localStorage.setItem('antigravity_cars', JSON.stringify(MOCK_FLEET));
+        localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
       }
       setIsMock(true);
       setLoading(false);
@@ -133,24 +133,24 @@ export function useCars() {
         setIsMock(false);
       } else {
         // Fallback if the Supabase cars table is empty
-        const stored = localStorage.getItem('antigravity_cars');
+        const stored = localStorage.getItem('antigravity_cars_v2');
         if (stored) {
           setCars(JSON.parse(stored));
         } else {
           setCars(MOCK_FLEET);
-          localStorage.setItem('antigravity_cars', JSON.stringify(MOCK_FLEET));
+          localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
         }
         setIsMock(true);
       }
     } catch (err) {
       console.warn('Supabase fetch failed, falling back to mock database:', err.message);
       setError(err.message);
-      const stored = localStorage.getItem('antigravity_cars');
+      const stored = localStorage.getItem('antigravity_cars_v2');
       if (stored) {
         setCars(JSON.parse(stored));
       } else {
         setCars(MOCK_FLEET);
-        localStorage.setItem('antigravity_cars', JSON.stringify(MOCK_FLEET));
+        localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
       }
       setIsMock(true);
     } finally {
@@ -174,10 +174,10 @@ export function useCars() {
     if (!isSupabaseConfigured) {
       // LocalStorage Engine
       try {
-        const stored = localStorage.getItem('antigravity_cars');
+        const stored = localStorage.getItem('antigravity_cars_v2');
         const fleet = stored ? JSON.parse(stored) : MOCK_FLEET;
         fleet.unshift(newCar);
-        localStorage.setItem('antigravity_cars', JSON.stringify(fleet));
+        localStorage.setItem('antigravity_cars_v2', JSON.stringify(fleet));
         setCars(fleet);
         return { success: true, data: newCar };
       } catch (err) {
@@ -211,10 +211,10 @@ export function useCars() {
       console.warn('Supabase car save failed, falling back to localStorage:', err.message);
       
       // Fallback
-      const stored = localStorage.getItem('antigravity_cars');
+      const stored = localStorage.getItem('antigravity_cars_v2');
       const fleet = stored ? JSON.parse(stored) : MOCK_FLEET;
       fleet.unshift(newCar);
-      localStorage.setItem('antigravity_cars', JSON.stringify(fleet));
+      localStorage.setItem('antigravity_cars_v2', JSON.stringify(fleet));
       setCars(fleet);
       return { success: true, data: newCar };
     }
@@ -225,10 +225,10 @@ export function useCars() {
     if (!isSupabaseConfigured) {
       // LocalStorage Engine
       try {
-        const stored = localStorage.getItem('antigravity_cars');
+        const stored = localStorage.getItem('antigravity_cars_v2');
         let fleet = stored ? JSON.parse(stored) : MOCK_FLEET;
         fleet = fleet.filter(c => c.id !== carId);
-        localStorage.setItem('antigravity_cars', JSON.stringify(fleet));
+        localStorage.setItem('antigravity_cars_v2', JSON.stringify(fleet));
         setCars(fleet);
         return { success: true };
       } catch (err) {
@@ -250,10 +250,10 @@ export function useCars() {
       console.warn('Supabase car delete failed, updating localStorage backup:', err.message);
       
       // Fallback
-      const stored = localStorage.getItem('antigravity_cars');
+      const stored = localStorage.getItem('antigravity_cars_v2');
       let fleet = stored ? JSON.parse(stored) : MOCK_FLEET;
       fleet = fleet.filter(c => c.id !== carId);
-      localStorage.setItem('antigravity_cars', JSON.stringify(fleet));
+      localStorage.setItem('antigravity_cars_v2', JSON.stringify(fleet));
       setCars(fleet);
       return { success: true };
     }

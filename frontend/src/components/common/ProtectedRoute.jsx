@@ -3,8 +3,8 @@ import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { IoCarSportOutline } from 'react-icons/io5';
 
-export default function ProtectedRoute({ children }) {
-  const { user, loading } = useAuth();
+export default function ProtectedRoute({ children, adminOnly = false }) {
+  const { user, loading, isAdmin } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -34,6 +34,11 @@ export default function ProtectedRoute({ children }) {
   if (!user) {
     // Redirect to /auth but save the current location they were trying to go to
     return <Navigate to="/auth" replace state={{ from: location }} />;
+  }
+
+  if (adminOnly && !isAdmin) {
+    // Redirect non-admins to dashboard
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;

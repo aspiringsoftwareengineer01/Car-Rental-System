@@ -1,10 +1,21 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Navbar from '../components/common/Navbar';
 import Footer from '../components/common/Footer';
+import { useAuth } from '../context/AuthContext';
 
 export default function MainLayout() {
+  const { isAdmin, loading } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!loading && isAdmin && location.pathname !== '/admin' && location.pathname !== '/dashboard') {
+      navigate('/admin', { replace: true });
+    }
+  }, [isAdmin, loading, location.pathname, navigate]);
+
   return (
     <div className="flex flex-col min-h-screen bg-bg-deep selection:bg-accent-cyan/30">
       {/* Toast Notification Provider */}

@@ -1,31 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  IoCarSport, 
-  IoMenuOutline, 
-  IoCloseOutline, 
-  IoPersonOutline, 
-  IoLogOutOutline, 
+import {
+  IoCarSport,
+  IoMenuOutline,
+  IoCloseOutline,
+  IoPersonOutline,
+  IoLogOutOutline,
   IoChevronDownOutline,
   IoBookmarkOutline,
-  IoSettingsOutline
+  IoSettingsOutline,
+  IoSunnyOutline,
+  IoMoonOutline
 } from 'react-icons/io5';
 import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
-  const { user, signOut } = useAuth();
+  const { user, signOut, isAdmin } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
-  const links = [
-    { name: 'Home', path: '/' },
-    { name: 'Cars Fleet', path: '/cars' },
-    { name: 'Reservations', path: '/booking' },
-    { name: 'Dashboard', path: '/dashboard' },
-  ];
+  const links = isAdmin
+    ? [{ name: 'Admin Console', path: '/admin' }]
+    : [
+        { name: 'Home', path: '/' },
+        { name: 'Cars Fleet', path: '/cars' },
+        { name: 'Reservations', path: '/booking' },
+        { name: 'Dashboard', path: '/dashboard' },
+      ];
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -62,7 +68,7 @@ export default function Navbar() {
             <IoCarSport className="text-2xl" />
           </div>
           <span className="font-display font-black text-2xl tracking-tight bg-gradient-to-r from-white via-white to-accent-cyan bg-clip-text text-transparent">
-            ANTIGRAVITY
+            Car Rental System
           </span>
         </Link>
 
@@ -73,8 +79,7 @@ export default function Navbar() {
               key={link.path}
               to={link.path}
               className={({ isActive }) =>
-                `text-sm font-semibold tracking-wide transition-all duration-300 hover:text-accent-cyan relative py-2 ${
-                  isActive ? 'text-accent-cyan after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-accent-cyan after:rounded-full' : 'text-text-muted'
+                `text-sm font-semibold tracking-wide transition-all duration-300 hover:text-accent-cyan relative py-2 ${isActive ? 'text-accent-cyan after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-accent-cyan after:rounded-full' : 'text-text-muted'
                 }`
               }
             >
@@ -85,6 +90,31 @@ export default function Navbar() {
 
         {/* Profile / Account Area */}
         <div className="hidden md:flex items-center gap-6">
+          {/* Theme Toggle Button */}
+          <button
+            onClick={toggleTheme}
+            className="w-10 h-10 flex items-center justify-center rounded-xl border border-white/5 bg-white/5 text-text-muted hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer shadow-sm relative overflow-hidden shrink-0 select-none"
+            aria-label="Toggle Theme"
+            title={theme === 'dark' ? "Switch to Light Mode" : "Switch to Dark Mode"}
+          >
+            <motion.div
+              initial={false}
+              animate={{ rotate: theme === 'dark' ? 0 : 180, scale: theme === 'dark' ? 1 : 0 }}
+              transition={{ duration: 0.3 }}
+              className="absolute flex items-center justify-center"
+            >
+              <IoSunnyOutline className="text-lg text-accent-cyan" />
+            </motion.div>
+            <motion.div
+              initial={false}
+              animate={{ rotate: theme === 'dark' ? -180 : 0, scale: theme === 'dark' ? 0 : 1 }}
+              transition={{ duration: 0.3 }}
+              className="absolute flex items-center justify-center"
+            >
+              <IoMoonOutline className="text-lg text-accent-purple" />
+            </motion.div>
+          </button>
+
           {user ? (
             /* Authenticated Dropdown Menu */
             <div className="relative" ref={dropdownRef}>
@@ -115,32 +145,36 @@ export default function Navbar() {
                       <span className="text-xs text-text-muted block truncate font-sans">{user.email}</span>
                     </div>
 
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setShowDropdown(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
-                    >
-                      <IoPersonOutline className="text-lg text-accent-cyan" />
-                      <span>User Profile</span>
-                    </Link>
+                    {isAdmin ? (
+                      <Link
+                        to="/dashboard"
+                        onClick={() => setShowDropdown(false)}
+                        className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
+                      >
+                        <IoPersonOutline className="text-lg text-accent-cyan" />
+                        <span>Admin Profile</span>
+                      </Link>
+                    ) : (
+                      <>
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setShowDropdown(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
+                        >
+                          <IoPersonOutline className="text-lg text-accent-cyan" />
+                          <span>User Profile</span>
+                        </Link>
 
-                    <Link
-                      to="/booking"
-                      onClick={() => setShowDropdown(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
-                    >
-                      <IoBookmarkOutline className="text-lg text-accent-purple" />
-                      <span>Bookings</span>
-                    </Link>
-
-                    <Link
-                      to="/admin"
-                      onClick={() => setShowDropdown(false)}
-                      className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
-                    >
-                      <IoSettingsOutline className="text-lg text-accent-coral" />
-                      <span>Admin Console</span>
-                    </Link>
+                        <Link
+                          to="/booking"
+                          onClick={() => setShowDropdown(false)}
+                          className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
+                        >
+                          <IoBookmarkOutline className="text-lg text-accent-purple" />
+                          <span>Bookings</span>
+                        </Link>
+                      </>
+                    )}
 
                     <hr className="border-white/5 my-1.5" />
 
@@ -163,9 +197,11 @@ export default function Navbar() {
             </Link>
           )}
 
-          <Link to="/cars" className="btn-premium btn-premium-hover px-5 py-2.5 rounded-lg text-sm font-bold shadow-md shadow-blue-500/5">
-            Book Now
-          </Link>
+          {!isAdmin && (
+            <Link to="/cars" className="btn-premium btn-premium-hover px-5 py-2.5 rounded-lg text-sm font-bold shadow-md shadow-blue-500/5">
+              Book Now
+            </Link>
+          )}
         </div>
 
         {/* Mobile Toggle Menu */}
@@ -195,10 +231,9 @@ export default function Navbar() {
                     to={link.path}
                     onClick={() => setIsOpen(false)}
                     className={({ isActive }) =>
-                      `text-base font-bold tracking-wide transition-all py-3 px-4 rounded-xl flex items-center ${
-                        isActive 
-                          ? 'bg-blue-500/10 text-accent-cyan' 
-                          : 'text-text-muted hover:bg-white/5 hover:text-white'
+                      `text-base font-bold tracking-wide transition-all py-3 px-4 rounded-xl flex items-center ${isActive
+                        ? 'bg-blue-500/10 text-accent-cyan'
+                        : 'text-text-muted hover:bg-white/5 hover:text-white'
                       }`
                     }
                   >
@@ -207,8 +242,26 @@ export default function Navbar() {
                 ))}
               </div>
               <hr className="border-white/5" />
-              
+
               <div className="flex flex-col gap-4">
+                {/* Mobile Theme Toggle */}
+                <button
+                  onClick={toggleTheme}
+                  className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs cursor-pointer select-none"
+                >
+                  {theme === 'dark' ? (
+                    <>
+                      <IoSunnyOutline className="text-base text-accent-cyan" />
+                      <span>Light Theme Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <IoMoonOutline className="text-base text-accent-purple" />
+                      <span>Dark Theme Mode</span>
+                    </>
+                  )}
+                </button>
+
                 {user ? (
                   <>
                     <div className="flex items-center gap-3 py-1 px-4">
@@ -221,23 +274,14 @@ export default function Navbar() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 mt-2">
+                    <div className="grid grid-cols-1 gap-2 mt-2">
                       <Link
                         to="/dashboard"
                         onClick={() => setIsOpen(false)}
                         className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs"
                       >
                         <IoPersonOutline className="text-base text-accent-cyan" />
-                        <span>Profile</span>
-                      </Link>
-
-                      <Link
-                        to="/admin"
-                        onClick={() => setIsOpen(false)}
-                        className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs"
-                      >
-                        <IoSettingsOutline className="text-base text-accent-coral" />
-                        <span>Admin</span>
+                        <span>{isAdmin ? 'Admin Profile' : 'Profile'}</span>
                       </Link>
                     </div>
 
@@ -260,13 +304,15 @@ export default function Navbar() {
                   </Link>
                 )}
 
-                <Link
-                  to="/cars"
-                  onClick={() => setIsOpen(false)}
-                  className="btn-premium btn-premium-hover text-center py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-accent-cyan/15 mt-2"
-                >
-                  Reserve Car
-                </Link>
+                {!isAdmin && (
+                  <Link
+                    to="/cars"
+                    onClick={() => setIsOpen(false)}
+                    className="btn-premium btn-premium-hover text-center py-3.5 rounded-xl font-bold text-sm shadow-lg shadow-accent-cyan/15 mt-2"
+                  >
+                    Reserve Car
+                  </Link>
+                )}
               </div>
             </div>
           </motion.div>

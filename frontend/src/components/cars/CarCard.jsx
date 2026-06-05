@@ -94,7 +94,7 @@ export default function CarCard({ car, onBook }) {
               </h3>
             </div>
             <div className="text-right shrink-0">
-              <span className="text-2xl font-black text-white font-display tracking-tight">${car.pricePerDay}</span>
+              <span className="text-2xl font-black text-white font-display tracking-tight">Rs {car.pricePerDay}</span>
               <span className="text-[10px] text-text-muted block font-normal mt-0.5 font-sans">/ day</span>
             </div>
           </div>

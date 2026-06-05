@@ -58,14 +58,32 @@ export default function Auth() {
       if (isLogin) {
         const result = await signIn(email, password);
         if (result?.success) {
-          navigate(from, { replace: true });
+          const userObj = result.data?.user;
+          const isAdminUser = !!(
+            userObj && (
+              userObj.user_metadata?.role === 'admin' ||
+              userObj.app_metadata?.role === 'admin' ||
+              userObj.email === 'admin@example.com' ||
+              userObj.email?.startsWith('admin@')
+            )
+          );
+          navigate(isAdminUser ? '/admin' : from, { replace: true });
         }
       } else {
         const result = await signUp(email, password, name);
         if (result?.success) {
           // Check if session exists (user is auto-logged in, e.g. Demo Mode or auto-confirm enabled)
           if (result.data?.session) {
-            navigate(from, { replace: true });
+            const userObj = result.data.session.user;
+            const isAdminUser = !!(
+              userObj && (
+                userObj.user_metadata?.role === 'admin' ||
+                userObj.app_metadata?.role === 'admin' ||
+                userObj.email === 'admin@example.com' ||
+                userObj.email?.startsWith('admin@')
+              )
+            );
+            navigate(isAdminUser ? '/admin' : from, { replace: true });
           } else {
             // Email confirmation required: switch to login tab, keep email for convenience, clear name/password
             setIsLogin(true);
@@ -182,6 +200,16 @@ export default function Auth() {
         >
           {isLogin ? 'Sign Up' : 'Log In'}
         </button>
+      </div>
+
+      {/* Demo Mode credentials helper */}
+      <div className="mt-8 pt-6 border-t border-white/5 relative z-10 text-center">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-accent-cyan text-[10px] font-bold uppercase tracking-wider mb-3">
+          💡 Demo Mode Sandbox
+        </div>
+        <p className="text-xs text-text-muted leading-relaxed max-w-sm mx-auto">
+          Sign in as Guest using <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono">demo@example.com</code> / <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono">password</code>, or as Admin using <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono">admin@example.com</code> / <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono">password</code>.
+        </p>
       </div>
     </div>
   );

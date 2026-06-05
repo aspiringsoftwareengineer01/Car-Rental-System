@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export function useBookings() {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -25,8 +25,8 @@ export function useBookings() {
       try {
         const stored = localStorage.getItem('antigravity_bookings');
         const allBookings = stored ? JSON.parse(stored) : [];
-        // Filter bookings belonging to current user email
-        const userBookings = allBookings.filter(b => b.userEmail === user.email);
+        // Filter bookings belonging to current user email, unless admin
+        const userBookings = isAdmin ? allBookings : allBookings.filter(b => b.userEmail === user.email);
         setBookings(userBookings);
       } catch (err) {
         console.error('Failed to parse mock bookings:', err);
@@ -38,7 +38,7 @@ export function useBookings() {
 
     try {
       // Live Supabase query
-      const { data, error } = await supabase
+      let query = supabase
         .from('bookings')
         .select(`
           id,
@@ -49,9 +49,13 @@ export function useBookings() {
           total_price,
           status,
           created_at
-        `)
-        .eq('user_email', user.email)
-        .order('created_at', { ascending: false });
+        `);
+
+      if (!isAdmin) {
+        query = query.eq('user_email', user.email);
+      }
+
+      const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
 
@@ -75,12 +79,12 @@ export function useBookings() {
       // Fallback
       const stored = localStorage.getItem('antigravity_bookings');
       const allBookings = stored ? JSON.parse(stored) : [];
-      const userBookings = allBookings.filter(b => b.userEmail === user.email);
+      const userBookings = isAdmin ? allBookings : allBookings.filter(b => b.userEmail === user.email);
       setBookings(userBookings);
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, isAdmin]);
 
   // Create booking operation
   const createBooking = async (bookingData) => {

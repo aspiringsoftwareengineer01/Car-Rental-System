@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
-import { 
-  IoCarSportOutline, 
-  IoSpeedometerOutline, 
-  IoShieldCheckmarkOutline, 
-  IoFlashOutline, 
-  IoSparklesOutline, 
-  IoStar, 
+import {
+  IoCarSportOutline,
+  IoSpeedometerOutline,
+  IoShieldCheckmarkOutline,
+  IoFlashOutline,
+  IoSparklesOutline,
+  IoStar,
   IoChevronForwardOutline,
   IoFingerPrintOutline
 } from 'react-icons/io5';
@@ -21,7 +21,7 @@ const FEATURED_CARS = [
     make: 'Tesla',
     model: 'Model S Plaid',
     type: 'Electric Luxury',
-    price: 180,
+    price: 5180,
     acceleration: '1.99s',
     range: '396 mi',
     imageText: '⚡ Plaid',
@@ -32,7 +32,7 @@ const FEATURED_CARS = [
     make: 'Porsche',
     model: '911 GT3 RS',
     type: 'Hyper Sports',
-    price: 280,
+    price: 5280,
     acceleration: '3.0s',
     range: '518 hp',
     imageText: '🏁 GT3 RS',
@@ -43,7 +43,7 @@ const FEATURED_CARS = [
     make: 'Range Rover',
     model: 'Autobiography',
     type: 'Luxury SUV',
-    price: 220,
+    price: 5220,
     acceleration: '4.4s',
     range: 'V8 Turbo',
     imageText: '👑 Elite SUV',
@@ -53,7 +53,7 @@ const FEATURED_CARS = [
 
 export default function Home() {
   const triggerWelcomeToast = () => {
-    toast.success('Welcome to Antigravity Premium Rentals! 🚗💨');
+    toast.success('Welcome to Car Rental System  Premium Rentals! 🚗💨');
   };
 
   return (
@@ -124,7 +124,7 @@ export default function Home() {
           >
             {/* Visual ambient shine */}
             <div className="absolute top-0 right-0 w-44 h-44 bg-blue-500/20 rounded-full blur-3xl"></div>
-            
+
             <div className="flex justify-between items-start">
               <div>
                 <span className="text-[10px] bg-white/10 border border-white/20 px-3 py-1 rounded-full text-white font-mono uppercase tracking-widest">
@@ -135,7 +135,7 @@ export default function Home() {
               </div>
               <div className="text-right">
                 <span className="text-xs text-text-muted block">RATES START FROM</span>
-                <span className="text-2xl font-extrabold text-blue-400 font-display">$280 <span className="text-xs text-text-muted font-normal">/ day</span></span>
+                <span className="text-2xl font-extrabold text-blue-400 font-display">Rs 5280 <span className="text-xs text-text-muted font-normal">/ day</span></span>
               </div>
             </div>
 
@@ -146,8 +146,8 @@ export default function Home() {
               <div className="absolute inset-y-0 left-0 w-12 bg-gradient-to-r from-slate-950/80 to-transparent z-20 pointer-events-none" />
               <div className="absolute inset-y-0 right-0 w-12 bg-gradient-to-l from-slate-950/80 to-transparent z-20 pointer-events-none" />
 
-              <img 
-                src="/images/porsche_911.png" 
+              <img
+                src="/images/porsche_911.png"
                 alt="Porsche 911"
                 className="w-full h-full object-cover z-10 filter drop-shadow-[0_15px_30px_rgba(0,180,255,0.25)] select-none pointer-events-none hover:scale-105 transition-transform duration-700"
               />
@@ -212,8 +212,8 @@ export default function Home() {
                 <div className="absolute top-4 left-4 bg-slate-950/85 border border-white/10 px-3 py-1 rounded-full text-xs font-mono font-bold z-30 select-none">
                   {car.imageText}
                 </div>
-                <img 
-                  src={getCarImage(car.id)} 
+                <img
+                  src={getCarImage(car.id)}
                   alt={`${car.make} ${car.model}`}
                   className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
                 />
@@ -227,7 +227,7 @@ export default function Home() {
                     <h3 className="text-2xl font-bold text-white mt-1">{car.make} <span className="font-normal text-slate-300">{car.model}</span></h3>
                   </div>
                   <div className="text-right">
-                    <span className="text-2xl font-black text-white">${car.price}</span>
+                    <span className="text-2xl font-black text-white">Rs {car.price}</span>
                     <span className="text-[10px] text-text-muted block font-normal">/ day</span>
                   </div>
                 </div>

@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
-import { 
-  IoArrowBackOutline, 
-  IoSpeedometerOutline, 
-  IoBuildOutline, 
+import {
+  IoArrowBackOutline,
+  IoSpeedometerOutline,
+  IoBuildOutline,
   IoPeopleOutline,
   IoFlashOutline,
   IoInformationCircleOutline,
@@ -31,7 +31,7 @@ export default function CarDetails() {
   // Dynamic specifications database based on fleet models
   const specs = useMemo(() => {
     if (!car) return { accel: '3.5s', hp: '450 hp', seats: '5 Seats', desc: 'Sleek luxury styling combined with high efficiency.' };
-    
+
     const makeModel = `${car.make} ${car.model}`.toLowerCase();
     if (makeModel.includes('tesla')) {
       return {
@@ -173,12 +173,12 @@ export default function CarDetails() {
             )}
           </div>
 
-          <img 
-            src={getCarImage(car.id)} 
+          <img
+            src={getCarImage(car.id)}
             alt={`${car.make} ${car.model}`}
             className="w-full h-full object-cover z-10 group-hover:scale-105 transition-transform duration-700 select-none pointer-events-none"
           />
-          
+
           <div className="absolute bottom-6 left-6 text-left z-30">
             <span className="text-[10px] bg-slate-950/80 border border-white/15 px-3.5 py-1.5 rounded-full text-accent-cyan font-mono font-bold tracking-widest uppercase shadow-md select-none">
               {car.type}
@@ -189,7 +189,7 @@ export default function CarDetails() {
         {/* Content details */}
         <div className="flex flex-col justify-center">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-accent-cyan/10 to-accent-purple/10 border border-accent-cyan/25 text-accent-cyan px-4 py-1.5 rounded-full text-[10px] font-bold tracking-widest uppercase w-max mb-6 select-none">
-            ✦ ANTIGRAVITY SPECIAL FLEET
+            ✦ CAR RENTAL SYSTEM SPECIAL FLEET
           </div>
           <h1 className="text-4xl md:text-5xl font-black mb-4 font-display">
             {car.make} <span className="font-normal text-slate-300 font-sans">{car.model}</span>
@@ -220,17 +220,17 @@ export default function CarDetails() {
           <div className="flex items-center justify-between border-t border-white/5 pt-8 flex-wrap sm:flex-nowrap gap-4">
             <div>
               <div className="text-text-muted text-xs uppercase tracking-widest">Renting Daily Rate</div>
-              <div className="text-3xl font-black text-white mt-1 font-sans">${car.pricePerDay} <span className="text-xs text-text-muted font-normal font-sans">/ day</span></div>
+              <div className="text-3xl font-black text-white mt-1 font-sans">Rs {car.pricePerDay} <span className="text-xs text-text-muted font-normal font-sans">/ day</span></div>
             </div>
             {isAvailable ? (
-              <button 
+              <button
                 onClick={handleBookClick}
                 className="btn-premium btn-premium-hover px-8 py-3.5 rounded-xl font-bold text-sm cursor-pointer shadow-lg shadow-accent-cyan/10"
               >
                 Reserve Car Now
               </button>
             ) : (
-              <button 
+              <button
                 disabled
                 className="px-8 py-3.5 rounded-xl bg-white/5 border border-white/5 text-text-muted/50 text-sm font-bold cursor-not-allowed select-none"
               >
@@ -242,10 +242,10 @@ export default function CarDetails() {
       </div>
 
       {/* Interactive Booking Modal Trigger */}
-      <BookingModal 
-        car={car} 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+      <BookingModal
+        car={car}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
       />
     </div>
   );

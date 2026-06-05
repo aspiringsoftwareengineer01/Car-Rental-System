@@ -62,14 +62,14 @@ WITH CHECK (auth.jwt() ->> 'email' = user_email);
 -- 6. Insert Premium Fleet Seed Data
 INSERT INTO public.cars (id, make, model, type, fuel_type, seats, price_per_day, status)
 VALUES
-  ('c_tesla_s', 'Tesla', 'Model S Plaid', 'Electric', 'Electric', 5, 180.00, 'available'),
-  ('c_porsche_911', 'Porsche', '911 GT3 RS', 'Sports', 'Gasoline', 2, 280.00, 'available'),
-  ('c_rangerover', 'Range Rover', 'Autobiography', 'SUV', 'Hybrid', 7, 220.00, 'rented'),
-  ('c_audietron', 'Audi', 'e-tron GT', 'Electric', 'Electric', 5, 190.00, 'available'),
-  ('c_bmwm4', 'BMW', 'M4 Competition', 'Sports', 'Gasoline', 4, 170.00, 'available'),
-  ('c_mercedesg63', 'Mercedes-AMG', 'G 63 AMG', 'SUV', 'Gasoline', 5, 250.00, 'maintenance'),
-  ('c_lucidair', 'Lucid', 'Air Sapphire', 'Electric', 'Electric', 5, 290.00, 'available'),
-  ('c_ferrarif8', 'Ferrari', 'F8 Tributo', 'Sports', 'Gasoline', 2, 380.00, 'available')
+  ('c_tesla_s', 'Tesla', 'Model S Plaid', 'Electric', 'Electric', 5, 5180.00, 'available'),
+  ('c_porsche_911', 'Porsche', '911 GT3 RS', 'Sports', 'Gasoline', 2, 5280.00, 'available'),
+  ('c_rangerover', 'Range Rover', 'Autobiography', 'SUV', 'Hybrid', 7, 5220.00, 'rented'),
+  ('c_audietron', 'Audi', 'e-tron GT', 'Electric', 'Electric', 5, 5190.00, 'available'),
+  ('c_bmwm4', 'BMW', 'M4 Competition', 'Sports', 'Gasoline', 4, 5170.00, 'available'),
+  ('c_mercedesg63', 'Mercedes-AMG', 'G 63 AMG', 'SUV', 'Gasoline', 5, 5250.00, 'maintenance'),
+  ('c_lucidair', 'Lucid', 'Air Sapphire', 'Electric', 'Electric', 5, 5290.00, 'available'),
+  ('c_ferrarif8', 'Ferrari', 'F8 Tributo', 'Sports', 'Gasoline', 2, 5380.00, 'available')
 ON CONFLICT (id) DO UPDATE 
 SET price_per_day = EXCLUDED.price_per_day,
     status = EXCLUDED.status;
