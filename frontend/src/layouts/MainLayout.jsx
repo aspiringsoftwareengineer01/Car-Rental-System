@@ -38,7 +38,7 @@ export default function MainLayout() {
       />
 
       {/* Sticky Premium Navigation */}
-      {location.pathname !== '/dashboard' && <Navbar />}
+      {location.pathname !== '/dashboard' && location.pathname !== '/admin' && <Navbar />}
 
       {/* Main Active Route View */}
       <main className="flex-grow">
@@ -46,7 +46,7 @@ export default function MainLayout() {
       </main>
 
       {/* Grid Footer */}
-      {location.pathname !== '/dashboard' && <Footer />}
+      {location.pathname !== '/dashboard' && location.pathname !== '/admin' && <Footer />}
     </div>
   );
 }

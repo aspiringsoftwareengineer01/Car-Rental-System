@@ -15,7 +15,7 @@
   --color-text-main: Hsl(210, 40%, 98%);
   --color-text-muted: Hsl(215, 20%, 65%);
   
-  --border-light: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(0, 242, 254, 0.15);
   --border-glow: rgba(0, 242, 254, 0.2);
 }
 

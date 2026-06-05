@@ -26,7 +26,7 @@ An individual customer's command center featuring high-level statistics, interac
 ![Customer Dashboard Preview](docs/screenshots/user_dashboard.png)
 
 ### 4. System Administrator Console
-A central hub for system management, featuring aggregate business statistics, vehicle inventory forms to add/remove assets, and client booking logs with administrative override controls.
+A central hub for system management, featuring aggregate business statistics, vehicle inventory forms to add/remove assets, and client booking logs with administrative override controls. Now fully responsive to both light and dark themes with custom contrast optimization.
 
 ![Admin Console Preview](docs/screenshots/admin_console.png)
 
@@ -109,8 +109,8 @@ Security policies are declared to ensure that authenticated users cannot access 
 The styling layer features a modern, high-contrast HSL color system that supports both dark and light modes.
 
 ### 1. Design Principles
-*   **Glassmorphism**: UI surfaces (`card-glass`) use high-opacity slate backdrops (`rgba(15, 23, 42, 0.65)`) with saturation filters and thin semi-transparent white borders to mimic etched glass panels over glowing background shapes.
-*   **Color Accents**: Cybernetic cyan (primary links), electric purple/indigo (buttons & interactive visualizer graphs), and vibrant coral (alerts & cancellation actions).
+*   **Glassmorphism**: UI surfaces (`card-glass`) use high-opacity slate backdrops (`rgba(15, 23, 42, 0.65)`) with saturation filters and thin semi-transparent borders to mimic etched glass panels over glowing background shapes. Card boundaries utilize a cybernetic neon cyan border (`rgba(0, 242, 254, 0.15)`) in dark mode to create an eye-catching glow.
+*   **Color Accents**: Cybernetic responsive cyan (`accent-cyan` in HSL) for links and highlights, shifting from bright neon cyan in dark mode to a high-contrast legible darker cyan (`hsl(190, 95%, 42%)`) in light mode. Similarly, electric purple/indigo shifts dynamically to `accent-purple` to match contrast requirements.
 *   **Micro-Animations**: Buttons and cards transition elevation (`translate-y`), border glow color, and shadow opacity upon cursor hover.
 
 ### 2. Tailwind Inversion Engine (Dark/Light Modes)
@@ -123,7 +123,7 @@ To accommodate both Light and Dark modes without polluting JS files with ternary
   --color-bg-surface: hsl(223, 47%, 16%);
   --color-text-main: hsl(210, 40%, 98%);
   --color-text-muted: hsl(215, 20%, 65%);
-  --border-light: rgba(255, 255, 255, 0.08);
+  --border-light: rgba(0, 242, 254, 0.15); /* Cybernetic neon cyan border */
 }
 
 /* Light Mode Theme Tokens (.light Selector) */
@@ -227,9 +227,10 @@ sequenceDiagram
     Prof-->>Admin: Persist settings in session database
 ```
 
-1.  **Secure Login**:
+1.  **Secure Login & Viewport Optimization**:
     *   The administrator signs in. In Sandbox Mode, this is simulated using `admin@example.com` / `password`.
     *   The system inspects authorization claims inside `useAuth()`. If validated as an admin, [MainLayout.jsx](file:///C:/Users/admin/Desktop/Car%20Rental%20System/frontend/src/layouts/MainLayout.jsx) automatically redirects them to the Admin portal at `/admin`.
+    *   **Layout Cleansing**: `MainLayout.jsx` automatically hides the standard customer Navbar and Footer components on `/admin` routes, avoiding duplicate navigation elements and giving the admin console sidebar full screen space.
 2.  **Console Monitoring**:
     *   On the [Admin.jsx](file:///C:/Users/admin/Desktop/Car%20Rental%20System/frontend/src/pages/Admin.jsx) page, the administrator views system-wide statistics:
         *   **Active System Rentals**: Total count of active rentals across the platform.
