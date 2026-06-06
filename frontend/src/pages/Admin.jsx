@@ -278,7 +278,9 @@ export default function Admin() {
 
   const handleSidebarClick = (tab) => {
     setActiveSidebar(tab);
-    if (tab === 'fleet') {
+    if (tab === 'dashboard') {
+      setActiveSubTab('fleet_mgmt');
+    } else if (tab === 'fleet') {
       setActiveSubTab('fleet_mgmt');
     } else if (tab === 'bookings') {
       setActiveSubTab('booking_orders');

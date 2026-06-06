@@ -147,7 +147,7 @@ export default function Navbar() {
 
                     {isAdmin ? (
                       <Link
-                        to="/dashboard"
+                        to="/admin"
                         onClick={() => setShowDropdown(false)}
                         className="flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-white/5 hover:text-accent-cyan transition-all text-text-muted hover:-translate-y-0.5"
                       >
@@ -276,7 +276,7 @@ export default function Navbar() {
 
                     <div className="grid grid-cols-1 gap-2 mt-2">
                       <Link
-                        to="/dashboard"
+                        to={isAdmin ? "/admin" : "/dashboard"}
                         onClick={() => setIsOpen(false)}
                         className="flex items-center justify-center gap-2 text-text-muted hover:text-white bg-white/5 border border-white/5 py-3 rounded-xl font-bold text-xs"
                       >

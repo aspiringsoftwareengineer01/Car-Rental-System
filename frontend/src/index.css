@@ -15,8 +15,11 @@
   --color-text-main: Hsl(210, 40%, 98%);
   --color-text-muted: Hsl(215, 20%, 65%);
   
-  --border-light: rgba(0, 242, 254, 0.15);
-  --border-glow: rgba(0, 242, 254, 0.2);
+  --color-border-light: rgba(0, 242, 254, 0.15);
+  --color-border-glow: rgba(0, 242, 254, 0.2);
+  
+  --border-light: var(--color-border-light);
+  --border-glow: var(--color-border-glow);
 }
 
 /* Custom Base Resets and Styling Utilities */
@@ -132,8 +135,11 @@
   --color-text-main: hsl(222, 47%, 12%); 
   --color-text-muted: hsl(215, 15%, 45%); 
   
-  --border-light: rgba(15, 23, 42, 0.08);
-  --border-glow: rgba(190, 95, 42, 0.15);
+  --color-border-light: rgba(15, 23, 42, 0.08);
+  --color-border-glow: rgba(190, 95, 42, 0.15);
+
+  --border-light: var(--color-border-light);
+  --border-glow: var(--color-border-glow);
 
   /* Invert core black and white for dynamic utilities */
   --color-white: hsl(222, 47%, 12%); 

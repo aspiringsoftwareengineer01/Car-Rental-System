@@ -32,7 +32,7 @@ export default function Cars() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLocation, setSelectedLocation] = useState('Mumbai');
   const [selectedTypes, setSelectedTypes] = useState([]);
-  const [maxPrice, setMaxPrice] = useState(150000);
+  const [maxPrice, setMaxPrice] = useState(6000);
   const [selectedBrand, setSelectedBrand] = useState('All');
   const [sortBy, setSortBy] = useState('price-asc');
 
@@ -70,8 +70,8 @@ export default function Cars() {
       // 2. Multi-select Types
       const matchesType = selectedTypes.length === 0 || selectedTypes.includes(car.type);
 
-      // 3. Price Filter (evaluates against scaled display rate of pricePerDay * 15)
-      const displayPrice = car.pricePerDay * 15;
+      // 3. Price Filter (evaluates against original daily rate)
+      const displayPrice = car.pricePerDay;
       const matchesPrice = displayPrice <= maxPrice;
 
       // 4. Brand Match
@@ -89,7 +89,7 @@ export default function Cars() {
   const resetFilters = () => {
     setSearchQuery('');
     setSelectedTypes([]);
-    setMaxPrice(150000);
+    setMaxPrice(6000);
     setSelectedBrand('All');
     setSelectedLocation('Mumbai');
     setSortBy('price-asc');
@@ -188,17 +188,17 @@ export default function Cars() {
           <div className="flex flex-col gap-2">
             <input 
               type="range" 
-              min={30000} 
-              max={150000} 
-              step={5000} 
+              min={5000} 
+              max={6000} 
+              step={50} 
               value={maxPrice} 
               onChange={(e) => setMaxPrice(Number(e.target.value))} 
               className="w-full h-1 bg-gradient-to-r from-cyan-400 via-indigo-500 to-purple-500 rounded-lg appearance-none cursor-pointer accent-purple-500"
             />
             <div className="flex justify-between text-xs font-mono text-slate-400 mt-2 select-none">
-              <span>Rs 30k</span>
+              <span>Rs 5,000</span>
               <span>-</span>
-              <span>Rs {(maxPrice / 1000).toFixed(0)}k+</span>
+              <span>Rs {maxPrice.toLocaleString()}</span>
             </div>
           </div>
         </div>
@@ -261,7 +261,7 @@ export default function Cars() {
         </div>
 
         {/* Results Counter / Reset triggers */}
-        {(searchQuery || selectedTypes.length > 0 || maxPrice < 150000 || selectedBrand !== 'All' || selectedLocation !== 'Mumbai') && (
+        {(searchQuery || selectedTypes.length > 0 || maxPrice < 6000 || selectedBrand !== 'All' || selectedLocation !== 'Mumbai') && (
           <div className="flex justify-between items-center bg-purple-500/5 border border-purple-500/10 p-3.5 rounded-xl text-xs select-none">
             <span className="text-slate-400">
               Active filters displaying <strong className="text-white">{filteredAndSortedCars.length}</strong> vehicles.

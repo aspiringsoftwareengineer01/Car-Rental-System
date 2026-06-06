@@ -101,7 +101,7 @@ export default function CarCard({ car, onBook }) {
               <div>
                 <span className="text-[10px] block uppercase tracking-wider text-slate-500 font-semibold">Daily Rate</span>
                 <span className="font-black text-white text-lg font-display">
-                  Rs {(car.pricePerDay * 15).toLocaleString()} <span className="text-xs text-slate-400 font-normal">/ day</span>
+                  Rs {car.pricePerDay.toLocaleString()} <span className="text-xs text-slate-400 font-normal">/ day</span>
                 </span>
               </div>
             </div>

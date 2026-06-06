@@ -366,7 +366,7 @@ export default function Dashboard() {
   }, [bookings, cars, searchQuery]);
 
   return (
-    <div className="min-h-screen bg-[#07090e] text-white pt-8 pb-20 px-6 lg:px-12 relative overflow-hidden font-sans select-none">
+    <div className="min-h-screen bg-bg-deep text-text-main pt-8 pb-20 px-6 lg:px-12 relative overflow-hidden font-sans select-none">
       
       {/* Dynamic Immersive Neon Lighting Backdrop */}
       <div className="absolute top-[-10%] left-[-15%] w-[60%] h-[60%] bg-gradient-to-br from-cyan-500/10 via-transparent to-transparent rounded-full blur-[150px] pointer-events-none"></div>
@@ -377,26 +377,26 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto flex flex-col gap-8 relative z-10">
         
         {/* ================= HEADER BAR CONTAINER ================= */}
-        <header className="card-glass w-full px-6 py-4 flex items-center justify-between border border-white/5 rounded-[2rem] bg-slate-900/20 backdrop-blur-2xl shadow-xl relative z-40">
+        <header className="card-glass w-full px-6 py-4 flex items-center justify-between rounded-[2rem] relative z-40">
           {/* Left Brand Area */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="bg-gradient-to-tr from-cyan-400 to-purple-500 p-2.5 rounded-xl text-slate-950 group-hover:scale-105 transition-transform duration-300">
               <IoCarSport className="text-2xl" />
             </div>
-            <span className="font-display font-extrabold text-2xl tracking-tight bg-gradient-to-r from-white via-white to-cyan-300 bg-clip-text text-transparent group-hover:scale-[1.02] transition-all duration-300 uppercase">
+            <span className="font-display font-extrabold text-2xl tracking-tight bg-gradient-to-r from-text-main to-accent-cyan bg-clip-text text-transparent group-hover:scale-[1.02] transition-all duration-300 uppercase">
               CAR RENTAL SYSTEM
             </span>
           </Link>
 
           {/* Middle Search Bar */}
           <div className="hidden md:flex relative w-80 items-center">
-            <IoSearchOutline className="absolute left-4 text-slate-400 text-lg" />
+            <IoSearchOutline className="absolute left-4 text-text-muted text-lg" />
             <input 
               type="text" 
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search..."
-              className="w-full bg-slate-950/40 border border-white/5 rounded-full pl-11 pr-4 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 transition-all duration-300"
+              className="w-full bg-bg-deep/60 border border-border-light rounded-full pl-11 pr-4 py-2 text-sm text-text-main placeholder-text-muted focus:outline-none focus:border-accent-cyan/50 transition-all duration-300"
             />
           </div>
 
@@ -406,7 +406,7 @@ export default function Dashboard() {
             <div className="relative" ref={notifDropdownRef}>
               <button 
                 onClick={handleBellClick}
-                className="relative w-10 h-10 rounded-xl border border-white/5 bg-slate-950/30 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-950/50 transition-all cursor-pointer"
+                className="relative w-10 h-10 rounded-xl border border-border-light bg-bg-deep/30 flex items-center justify-center text-text-muted hover:text-text-main hover:bg-white/5 transition-all cursor-pointer"
               >
                 <IoNotificationsOutline className="text-xl" />
                 {/* Blue notification indicator dot */}
@@ -422,12 +422,11 @@ export default function Dashboard() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-3 w-80 sm:w-96 card-glass rounded-2xl border border-white/10 p-4 shadow-2xl z-50 overflow-hidden"
-                    style={{ background: 'rgba(7, 9, 14, 0.96)' }}
+                    className="absolute right-0 mt-3 w-80 sm:w-96 card-glass rounded-2xl p-4 shadow-2xl z-50 overflow-hidden"
                   >
-                    <div className="flex justify-between items-center pb-3 border-b border-white/5 mb-3 select-none">
+                    <div className="flex justify-between items-center pb-3 border-b border-border-light mb-3 select-none">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-bold text-white block">Notifications</span>
+                        <span className="text-sm font-bold text-text-main block">Notifications</span>
                         {unreadCount > 0 && (
                           <span className="bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider">
                             {unreadCount} New
@@ -469,7 +468,7 @@ export default function Dashboard() {
                               className={`p-3 rounded-xl border flex gap-3 transition-colors relative ${
                                 n.status === 'unread' 
                                   ? 'bg-cyan-500/[0.03] border-cyan-500/20' 
-                                  : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.03]'
+                                  : 'bg-white/[0.01] border-border-light hover:bg-white/[0.03]'
                               }`}
                             >
                               {/* Indicator badge for unread */}
@@ -481,8 +480,8 @@ export default function Dashboard() {
                                 {icon}
                               </div>
                               <div className="flex flex-col gap-1 pr-2">
-                                <p className="text-xs text-slate-200 font-medium leading-relaxed font-sans">{n.text}</p>
-                                <span className="text-[9px] text-slate-500 font-semibold font-mono">
+                                <p className="text-xs text-text-main font-medium leading-relaxed font-sans">{n.text}</p>
+                                <span className="text-[9px] text-text-muted font-semibold font-mono">
                                   {new Date(n.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               </div>
@@ -500,16 +499,16 @@ export default function Dashboard() {
             <div className="relative" ref={dropdownRef}>
               <button 
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center gap-3 pl-3 pr-4 py-2 border border-white/5 bg-slate-950/30 hover:bg-slate-950/50 rounded-full transition-all cursor-pointer select-none"
+                className="flex items-center gap-3 pl-3 pr-4 py-2 border border-border-light bg-bg-deep/30 hover:bg-white/5 rounded-full transition-all cursor-pointer select-none"
               >
                 {/* User initials avatar instead of static headshot */}
                 <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-cyan-400 to-purple-500 text-[#0d121f] flex items-center justify-center font-black text-[11px] uppercase border border-white/10 shadow-inner">
                   {getDisplayName().slice(0, 2)}
                 </div>
-                <span className="hidden sm:inline text-sm font-bold tracking-tight text-slate-200">
+                <span className="hidden sm:inline text-sm font-bold tracking-tight text-text-main">
                   {getDisplayName()}
                 </span>
-                <IoChevronDownOutline className={`text-slate-400 text-xs transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                <IoChevronDownOutline className={`text-text-muted text-xs transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
               <AnimatePresence>
@@ -519,17 +518,16 @@ export default function Dashboard() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 mt-3 w-56 card-glass rounded-2xl border border-white/10 p-2 shadow-2xl z-50 overflow-hidden"
-                    style={{ background: 'rgba(7, 9, 14, 0.96)' }}
+                    className="absolute right-0 mt-3 w-56 card-glass rounded-2xl p-2 shadow-2xl z-50 overflow-hidden"
                   >
-                    <div className="px-4 py-3 border-b border-white/5 mb-2 select-none">
-                      <span className="text-sm font-bold text-white block truncate">{getDisplayName()}</span>
-                      <span className="text-[10px] text-slate-400 block truncate font-sans mt-0.5">{user?.email || 'sarah.jones@example.com'}</span>
+                    <div className="px-4 py-3 border-b border-border-light mb-2 select-none">
+                      <span className="text-sm font-bold text-text-main block truncate">{getDisplayName()}</span>
+                      <span className="text-[10px] text-text-muted block truncate font-sans mt-0.5">{user?.email || 'sarah.jones@example.com'}</span>
                     </div>
 
                     <button 
                       onClick={() => { setIsDropdownOpen(false); setIsEditOpen(true); }}
-                      className="w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/5 hover:text-cyan-400 text-slate-300 transition-all cursor-pointer text-left"
+                      className="w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/5 hover:text-cyan-400 text-text-muted transition-all cursor-pointer text-left"
                     >
                       <IoSettingsOutline className="text-base text-cyan-400" />
                       <span>Edit Profile</span>
@@ -537,13 +535,13 @@ export default function Dashboard() {
 
                     <Link 
                       to="/cars"
-                      className="w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/5 hover:text-cyan-400 text-slate-300 transition-all cursor-pointer text-left"
+                      className="w-full flex items-center gap-3 px-4 py-2 rounded-xl text-xs font-bold hover:bg-white/5 hover:text-cyan-400 text-text-muted transition-all cursor-pointer text-left"
                     >
                       <IoCarSport className="text-base text-cyan-400" />
                       <span>Back to Fleet</span>
                     </Link>
 
-                    <hr className="border-white/5 my-1.5" />
+                    <hr className="border-border-light my-1.5" />
 
                     <button 
                       onClick={handleLogout}
@@ -564,36 +562,36 @@ export default function Dashboard() {
           
           {/* Card 1: Active Rides */}
           <div className="relative group p-[1px] bg-gradient-to-r from-purple-500/20 to-purple-600/10 hover:from-purple-500/50 hover:to-purple-600/40 rounded-3xl transition-all duration-500 shadow-md shadow-purple-500/5 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)]">
-            <div className="bg-[#0b0e14]/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
+            <div className="bg-bg-surface/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
               <div className="flex items-center justify-between w-full">
-                <span className="text-slate-400 text-xs font-bold font-sans">Active Rides</span>
+                <span className="text-text-muted text-xs font-bold font-sans">Active Rides</span>
                 <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20">
                   <IoSpeedometerOutline className="text-base" />
                 </div>
               </div>
               <div className="flex flex-col gap-1 mt-4">
-                <span className="text-4xl font-black font-sans tracking-tight text-white">
+                <span className="text-4xl font-black font-sans tracking-tight text-text-main">
                   {stats.active}
                 </span>
-                <span className="text-slate-500 text-xs font-bold">Currently Driving</span>
+                <span className="text-text-muted text-xs font-bold">Currently Driving</span>
               </div>
             </div>
           </div>
 
           {/* Card 2: Trips Completed */}
           <div className="relative group p-[1px] bg-gradient-to-r from-cyan-500/20 to-cyan-600/10 hover:from-cyan-500/50 hover:to-cyan-600/40 rounded-3xl transition-all duration-500 shadow-md shadow-cyan-500/5 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)]">
-            <div className="bg-[#0b0e14]/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
+            <div className="bg-bg-surface/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
               <div className="flex items-center justify-between w-full">
-                <span className="text-slate-400 text-xs font-bold font-sans">Trips Completed</span>
+                <span className="text-text-muted text-xs font-bold font-sans">Trips Completed</span>
                 <div className="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
                   <IoFlagOutline className="text-base" />
                 </div>
               </div>
               <div className="flex flex-col gap-1 mt-4">
-                <span className="text-4xl font-black font-sans tracking-tight text-white">
+                <span className="text-4xl font-black font-sans tracking-tight text-text-main">
                   {stats.trips}
                 </span>
-                <span className="text-slate-500 text-xs font-bold">
+                <span className="text-text-muted text-xs font-bold">
                   <strong className="text-emerald-400 font-extrabold">+5</strong> this week
                 </span>
               </div>
@@ -602,36 +600,36 @@ export default function Dashboard() {
 
           {/* Card 3: Total Spent */}
           <div className="relative group p-[1px] bg-gradient-to-r from-purple-500/20 to-purple-600/10 hover:from-purple-500/50 hover:to-purple-600/40 rounded-3xl transition-all duration-500 shadow-md shadow-purple-500/5 hover:shadow-[0_0_20px_rgba(168,85,247,0.25)]">
-            <div className="bg-[#0b0e14]/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
+            <div className="bg-bg-surface/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
               <div className="flex items-center justify-between w-full">
-                <span className="text-slate-400 text-xs font-bold font-sans">Total Spent</span>
+                <span className="text-text-muted text-xs font-bold font-sans">Total Spent</span>
                 <div className="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center text-purple-400 border border-purple-500/20">
                   <IoCardOutline className="text-base" />
                 </div>
               </div>
               <div className="flex flex-col gap-1 mt-4">
-                <span className="text-3xl font-black font-sans tracking-tight text-white">
+                <span className="text-3xl font-black font-sans tracking-tight text-text-main">
                   Rs {stats.spent.toLocaleString()}
                 </span>
-                <span className="text-slate-500 text-xs font-bold">Total Expenditure</span>
+                <span className="text-text-muted text-xs font-bold">Total Expenditure</span>
               </div>
             </div>
           </div>
 
           {/* Card 4: Points Earned */}
           <div className="relative group p-[1px] bg-gradient-to-r from-cyan-500/20 to-cyan-600/10 hover:from-cyan-500/50 hover:to-cyan-600/40 rounded-3xl transition-all duration-500 shadow-md shadow-cyan-500/5 hover:shadow-[0_0_20px_rgba(6,182,212,0.25)]">
-            <div className="bg-[#0b0e14]/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
+            <div className="bg-bg-surface/90 p-6 rounded-[1.4rem] flex flex-col justify-between h-40">
               <div className="flex items-center justify-between w-full">
-                <span className="text-slate-400 text-xs font-bold font-sans">Points Earned</span>
+                <span className="text-text-muted text-xs font-bold font-sans">Points Earned</span>
                 <div className="w-8 h-8 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 border border-cyan-500/20">
                   <IoStarOutline className="text-base" />
                 </div>
               </div>
               <div className="flex flex-col gap-1 mt-4">
-                <span className="text-4xl font-black font-sans tracking-tight text-white">
+                <span className="text-4xl font-black font-sans tracking-tight text-text-main">
                   {stats.points.toLocaleString()}
                 </span>
-                <span className="text-slate-500 text-xs font-bold">Tier: Galaxy Explorer</span>
+                <span className="text-text-muted text-xs font-bold">Tier: Galaxy Explorer</span>
               </div>
             </div>
           </div>
@@ -639,12 +637,12 @@ export default function Dashboard() {
         </section>
 
         {/* ================= EXPENDITURE GRAPH CARD ================= */}
-        <section className="card-glass w-full p-8 border border-white/5 rounded-[2rem] bg-slate-900/10 shadow-2xl relative overflow-hidden">
+        <section className="card-glass w-full p-8 rounded-[2rem] relative overflow-hidden">
           {/* Inner ambient glow */}
           <div className="absolute top-[20%] left-[30%] w-60 h-60 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
           <div className="mb-8 select-none">
-            <h3 className="text-xl font-extrabold font-display text-white">Expenditure Graph</h3>
+            <h3 className="text-xl font-extrabold font-display text-text-main">Expenditure Graph</h3>
           </div>
 
           {/* Curved SVG Area Chart */}
@@ -654,7 +652,7 @@ export default function Dashboard() {
                 <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.35" />
                   <stop offset="60%" stopColor="#06b6d4" stopOpacity="0.1" />
-                  <stop offset="100%" stopColor="#07090e" stopOpacity="0.0" />
+                  <stop offset="100%" stopColor="var(--color-bg-deep)" stopOpacity="0.0" />
                 </linearGradient>
                 <linearGradient id="lineGradient" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%" stopColor="#8b5cf6" />
@@ -670,10 +668,10 @@ export default function Dashboard() {
               <line x1="50" y1="190" x2="550" y2="190" stroke="rgba(255, 255, 255, 0.04)" />
 
               {/* Grid labels (left) */}
-              <text x="35" y="34" fill="#475569" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 600</text>
-              <text x="35" y="89" fill="#475569" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 400</text>
-              <text x="35" y="144" fill="#475569" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 200</text>
-              <text x="35" y="194" fill="#475569" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 0</text>
+              <text x="35" y="34" fill="var(--color-text-muted)" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 600</text>
+              <text x="35" y="89" fill="var(--color-text-muted)" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 400</text>
+              <text x="35" y="144" fill="var(--color-text-muted)" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 200</text>
+              <text x="35" y="194" fill="var(--color-text-muted)" fontSize="10" fontWeight="bold" textAnchor="end" className="font-mono">Rs 0</text>
 
               {/* Filled Area path */}
               <path 
@@ -700,36 +698,36 @@ export default function Dashboard() {
 
               {/* Feb Tooltip Point */}
               <g transform="translate(150, 50)">
-                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="#0b0e14" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                <text x="0" y="-22" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle" className="font-sans">Rs 450</text>
-                <circle cx="0" cy="0" r="4.5" fill="#8b5cf6" stroke="#ffffff" strokeWidth="1.5" />
+                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="var(--color-bg-surface)" stroke="var(--color-border-light)" strokeWidth="1" />
+                <text x="0" y="-22" fill="var(--color-text-main)" fontSize="9" fontWeight="bold" textAnchor="middle" className="font-sans">Rs 450</text>
+                <circle cx="0" cy="0" r="4.5" fill="#8b5cf6" stroke="var(--color-bg-surface)" strokeWidth="1.5" />
               </g>
 
               {/* Mar Tooltip Point */}
               <g transform="translate(250, 80)">
-                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="#0b0e14" stroke="rgba(255,255,255,0.06)" strokeWidth="1" />
-                <text x="0" y="-22" fill="#ffffff" fontSize="9" fontWeight="bold" textAnchor="middle" className="font-sans">Rs 380</text>
-                <circle cx="0" cy="0" r="4.5" fill="#6366f1" stroke="#ffffff" strokeWidth="1.5" />
+                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="var(--color-bg-surface)" stroke="var(--color-border-light)" strokeWidth="1" />
+                <text x="0" y="-22" fill="var(--color-text-main)" fontSize="9" fontWeight="bold" textAnchor="middle" className="font-sans">Rs 380</text>
+                <circle cx="0" cy="0" r="4.5" fill="#6366f1" stroke="var(--color-bg-surface)" strokeWidth="1.5" />
               </g>
 
               {/* May Tooltip Point (Active Glow) */}
               <g transform="translate(450, 30)">
                 {/* Neon pulse rings */}
                 <circle cx="0" cy="0" r="9" fill="#06b6d4" opacity="0.35" className="animate-pulse" />
-                <circle cx="0" cy="0" r="4.5" fill="#06b6d4" stroke="#ffffff" strokeWidth="2" />
+                <circle cx="0" cy="0" r="4.5" fill="#06b6d4" stroke="var(--color-bg-surface)" strokeWidth="2" />
                 
                 {/* Floating tooltip */}
-                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="#0b0e14" stroke="rgba(6, 182, 212, 0.4)" strokeWidth="1" />
-                <text x="0" y="-22" fill="#22d3ee" fontSize="9" fontWeight="extrabold" textAnchor="middle" className="font-sans">Rs 510</text>
+                <rect x="-26" y="-35" width="52" height="20" rx="5" fill="var(--color-bg-surface)" stroke="var(--color-accent-cyan)" strokeWidth="1" />
+                <text x="0" y="-22" fill="var(--color-accent-cyan)" fontSize="9" fontWeight="extrabold" textAnchor="middle" className="font-sans">Rs 510</text>
               </g>
             </svg>
           </div>
         </section>
 
         {/* ================= RECENT RESERVATIONS CARD ================= */}
-        <section className="card-glass w-full p-8 border border-white/5 rounded-[2rem] bg-slate-900/10 shadow-2xl">
-          <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4 select-none">
-            <h3 className="text-xl font-extrabold font-display text-white">Recent Reservations</h3>
+        <section className="card-glass w-full p-8 rounded-[2rem]">
+          <div className="flex justify-between items-center mb-6 border-b border-border-light pb-4 select-none">
+            <h3 className="text-xl font-extrabold font-display text-text-main">Recent Reservations</h3>
             {searchQuery && (
               <span className="text-xs text-cyan-400 font-bold bg-cyan-500/10 px-3 py-1 rounded-full">
                 Filtered Search Result
@@ -740,7 +738,7 @@ export default function Dashboard() {
           <div className="overflow-x-auto w-full custom-scrollbar">
             <table className="w-full text-left border-collapse text-sm">
               <thead>
-                <tr className="border-b border-white/5 text-slate-500 font-bold text-xs uppercase tracking-wider select-none">
+                <tr className="border-b border-border-light text-text-muted font-bold text-xs uppercase tracking-wider select-none">
                   <th className="pb-4 pt-1 font-bold">Car +</th>
                   <th className="pb-4 pt-1 font-bold">Dates</th>
                   <th className="pb-4 pt-1 font-bold">Duration</th>
@@ -756,29 +754,29 @@ export default function Dashboard() {
                   return (
                     <tr 
                       key={booking.id} 
-                      className="border-b border-white/5 hover:bg-white/[0.02] transition-colors duration-200 group"
+                      className="border-b border-border-light hover:bg-white/5 transition-colors duration-200 group"
                     >
                       {/* Car Details */}
                       <td className="py-4 flex items-center gap-4 min-w-[240px]">
-                        <div className="w-16 h-10 rounded-lg bg-slate-900 border border-white/5 overflow-hidden shrink-0">
+                        <div className="w-16 h-10 rounded-lg bg-slate-900 border border-border-light overflow-hidden shrink-0">
                           <img 
                             src={getCarImage(booking.carId)} 
                             alt={booking.carName} 
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         </div>
-                        <span className="font-extrabold text-white text-base tracking-tight font-sans">
+                        <span className="font-extrabold text-text-main text-base tracking-tight font-sans">
                           {booking.carName}
                         </span>
                       </td>
 
                       {/* Dates */}
-                      <td className="py-4 text-slate-300 font-medium font-sans">
+                      <td className="py-4 text-text-main font-medium font-sans">
                         {booking.dates}
                       </td>
 
                       {/* Duration */}
-                      <td className="py-4 text-slate-400 font-medium font-sans">
+                      <td className="py-4 text-text-muted font-medium font-sans">
                         {booking.duration}
                       </td>
 
@@ -804,7 +802,7 @@ export default function Dashboard() {
                       </td>
 
                       {/* Total price */}
-                      <td className="py-4 text-right font-black text-white text-base font-sans">
+                      <td className="py-4 text-right font-black text-text-main text-base font-sans">
                         Rs {booking.totalPrice.toLocaleString()}
                       </td>
 
@@ -852,7 +850,7 @@ export default function Dashboard() {
               animate={{ scale: 1, y: 0, opacity: 1 }}
               exit={{ scale: 0.95, y: 20, opacity: 0 }}
               transition={{ type: 'spring', duration: 0.5 }}
-              className="relative w-full max-w-md card-glass p-8 rounded-[2rem] border-white/10 bg-[#0d1119] shadow-2xl z-10 overflow-hidden text-left"
+              className="relative w-full max-w-md card-glass p-8 rounded-[2rem] shadow-2xl z-10 overflow-hidden text-left"
             >
               {/* Inner modal glow */}
               <div className="absolute -top-24 -left-24 w-48 h-48 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
@@ -861,7 +859,7 @@ export default function Dashboard() {
               {/* Close Icon Button */}
               <button
                 onClick={() => setIsEditOpen(false)}
-                className="absolute top-6 right-6 text-slate-400 hover:text-white transition-colors duration-300 w-8 h-8 rounded-full border border-white/5 bg-white/5 hover:bg-white/10 flex items-center justify-center cursor-pointer"
+                className="absolute top-6 right-6 text-text-muted hover:text-text-main transition-colors duration-300 w-8 h-8 rounded-full border border-border-light bg-bg-surface/50 hover:bg-white/10 flex items-center justify-center cursor-pointer"
               >
                 <IoCloseOutline className="text-xl" />
               </button>
@@ -870,15 +868,15 @@ export default function Dashboard() {
                 <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block mb-1">
                   Account Control Panel
                 </span>
-                <h2 className="text-2xl font-black font-display text-white">Edit Profile</h2>
-                <p className="text-slate-400 text-xs mt-1 font-sans">
+                <h2 className="text-2xl font-black font-display text-text-main">Edit Profile</h2>
+                <p className="text-text-muted text-xs mt-1 font-sans">
                   Modify display name and update access credentials below.
                 </p>
               </div>
 
               <form onSubmit={handleEditSubmit} className="flex flex-col gap-5">
                 <div>
-                  <label htmlFor="editName" className="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wide font-display">
+                  <label htmlFor="editName" className="block text-xs font-bold text-text-muted uppercase mb-2 tracking-wide font-display">
                     Full Name
                   </label>
                   <input
@@ -888,16 +886,16 @@ export default function Dashboard() {
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
                     placeholder="Enter your full name"
-                    className="w-full bg-[#05070b]/60 border border-white/5 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-xl px-4 py-3 text-sm text-white transition-all duration-300 outline-none font-sans"
+                    className="w-full bg-bg-deep/60 border border-border-light focus:border-accent-cyan/50 focus:ring-1 focus:ring-accent-cyan/30 rounded-xl px-4 py-3 text-sm text-text-main transition-all duration-300 outline-none font-sans"
                   />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <label htmlFor="editPassword" className="block text-xs font-bold text-slate-400 uppercase tracking-wide font-display">
+                    <label htmlFor="editPassword" className="block text-xs font-bold text-text-muted uppercase tracking-wide font-display">
                       New Password (Optional)
                     </label>
-                    <span className="text-[9px] text-slate-500 font-semibold lowercase font-sans">
+                    <span className="text-[9px] text-text-muted font-semibold lowercase font-sans">
                       Min. 6 characters
                     </span>
                   </div>
@@ -908,12 +906,12 @@ export default function Dashboard() {
                       value={editPassword}
                       onChange={(e) => setEditPassword(e.target.value)}
                       placeholder="Leave blank to keep current"
-                      className="w-full bg-[#05070b]/60 border border-white/5 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-xl px-4 py-3 pr-10 text-sm text-white transition-all duration-300 outline-none font-sans"
+                      className="w-full bg-bg-deep/60 border border-border-light focus:border-accent-cyan/50 focus:ring-1 focus:ring-accent-cyan/30 rounded-xl px-4 py-3 pr-10 text-sm text-text-main transition-all duration-300 outline-none font-sans"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-white transition-colors cursor-pointer"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-text-muted hover:text-text-main transition-colors cursor-pointer"
                     >
                       {showPassword ? <IoEyeOffOutline className="text-lg" /> : <IoEyeOutline className="text-lg" />}
                     </button>
@@ -927,7 +925,7 @@ export default function Dashboard() {
                     exit={{ opacity: 0, height: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <label htmlFor="confirmPassword" className="block text-xs font-bold text-slate-400 uppercase mb-2 tracking-wide font-display">
+                    <label htmlFor="confirmPassword" className="block text-xs font-bold text-text-muted uppercase mb-2 tracking-wide font-display">
                       Confirm New Password
                     </label>
                     <input
@@ -937,7 +935,7 @@ export default function Dashboard() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm your new password"
-                      className="w-full bg-[#05070b]/60 border border-white/5 focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/30 rounded-xl px-4 py-3 text-sm text-white transition-all duration-300 outline-none font-sans"
+                      className="w-full bg-bg-deep/60 border border-border-light focus:border-accent-cyan/50 focus:ring-1 focus:ring-accent-cyan/30 rounded-xl px-4 py-3 text-sm text-text-main transition-all duration-300 outline-none font-sans"
                     />
                   </motion.div>
                 )}
@@ -946,7 +944,7 @@ export default function Dashboard() {
                   <button
                     type="button"
                     onClick={() => setIsEditOpen(false)}
-                    className="flex-1 border border-white/10 hover:border-white/20 bg-white/5 hover:bg-white/10 text-white font-bold text-xs py-3.5 rounded-xl transition-all duration-300 cursor-pointer text-center"
+                    className="flex-1 border border-border-light bg-bg-deep/55 hover:bg-bg-deep/80 text-text-main font-bold text-xs py-3.5 rounded-xl transition-all duration-300 cursor-pointer text-center"
                   >
                     Cancel
                   </button>
