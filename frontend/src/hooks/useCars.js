@@ -12,6 +12,7 @@ const MOCK_FLEET = [
     seats: 5,
     pricePerDay: 5180,
     status: 'available',
+    location: 'Karachi',
   },
   {
     id: 'c_porsche_911',
@@ -22,6 +23,7 @@ const MOCK_FLEET = [
     seats: 2,
     pricePerDay: 5280,
     status: 'available',
+    location: 'Lahore',
   },
   {
     id: 'c_rangerover',
@@ -32,6 +34,7 @@ const MOCK_FLEET = [
     seats: 7,
     pricePerDay: 5220,
     status: 'rented',
+    location: 'Islamabad',
   },
   {
     id: 'c_audietron',
@@ -42,6 +45,7 @@ const MOCK_FLEET = [
     seats: 5,
     pricePerDay: 5190,
     status: 'available',
+    location: 'Karachi',
   },
   {
     id: 'c_bmwm4',
@@ -52,6 +56,7 @@ const MOCK_FLEET = [
     seats: 4,
     pricePerDay: 5170,
     status: 'available',
+    location: 'Lahore',
   },
   {
     id: 'c_mercedesg63',
@@ -62,6 +67,7 @@ const MOCK_FLEET = [
     seats: 5,
     pricePerDay: 5250,
     status: 'maintenance',
+    location: 'Islamabad',
   },
   {
     id: 'c_lucidair',
@@ -72,6 +78,7 @@ const MOCK_FLEET = [
     seats: 5,
     pricePerDay: 5290,
     status: 'available',
+    location: 'Karachi',
   },
   {
     id: 'c_ferrarif8',
@@ -82,6 +89,7 @@ const MOCK_FLEET = [
     seats: 2,
     pricePerDay: 5380,
     status: 'available',
+    location: 'Lahore',
   }
 ];
 
@@ -99,7 +107,12 @@ export function useCars() {
     if (!isSupabaseConfigured) {
       const stored = localStorage.getItem('antigravity_cars_v2');
       if (stored) {
-        setCars(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        const withLocations = parsed.map((car, i) => ({
+          ...car,
+          location: car.location || ['Karachi', 'Lahore', 'Islamabad'][i % 3]
+        }));
+        setCars(withLocations);
       } else {
         setCars(MOCK_FLEET);
         localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
@@ -110,10 +123,13 @@ export function useCars() {
     }
 
     try {
-      // Scenario B: Fetch from Supabase Table
-      const { data, error } = await supabase
-        .from('cars')
-        .select('*');
+      // Race Supabase fetch against a 6-second timeout so we never hang forever
+      const fetchPromise = supabase.from('cars').select('*');
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Supabase fetch timed out after 6s')), 6000)
+      );
+
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
 
       if (error) throw error;
 
@@ -128,6 +144,7 @@ export function useCars() {
           seats: car.seats || 5,
           pricePerDay: car.price_per_day || car.pricePerDay || 100,
           status: car.status || 'available',
+          location: car.location || ['Karachi', 'Lahore', 'Islamabad'][Math.floor(Math.random() * 3)],
         }));
         setCars(formattedCars);
         setIsMock(false);
@@ -135,7 +152,12 @@ export function useCars() {
         // Fallback if the Supabase cars table is empty
         const stored = localStorage.getItem('antigravity_cars_v2');
         if (stored) {
-          setCars(JSON.parse(stored));
+          const parsed = JSON.parse(stored);
+          const withLocations = parsed.map((car, i) => ({
+            ...car,
+            location: car.location || ['Karachi', 'Lahore', 'Islamabad'][i % 3]
+          }));
+          setCars(withLocations);
         } else {
           setCars(MOCK_FLEET);
           localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
@@ -147,7 +169,12 @@ export function useCars() {
       setError(err.message);
       const stored = localStorage.getItem('antigravity_cars_v2');
       if (stored) {
-        setCars(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        const withLocations = parsed.map((car, i) => ({
+          ...car,
+          location: car.location || ['Karachi', 'Lahore', 'Islamabad'][i % 3]
+        }));
+        setCars(withLocations);
       } else {
         setCars(MOCK_FLEET);
         localStorage.setItem('antigravity_cars_v2', JSON.stringify(MOCK_FLEET));
@@ -156,6 +183,7 @@ export function useCars() {
     } finally {
       setLoading(false);
     }
+
   }, []);
 
   // Administrative Add Car Action
@@ -168,7 +196,8 @@ export function useCars() {
       fuelType: carData.fuelType || 'Gasoline',
       seats: Number(carData.seats) || 5,
       pricePerDay: Number(carData.pricePerDay),
-      status: carData.status || 'available'
+      status: carData.status || 'available',
+      location: carData.location || 'Karachi'
     };
 
     if (!isSupabaseConfigured) {

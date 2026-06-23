@@ -30,7 +30,7 @@ export default function Cars() {
 
   // Local state for search, filters, location, and sorting
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedLocation, setSelectedLocation] = useState('Mumbai');
+  const [selectedLocation, setSelectedLocation] = useState('All Locations');
   const [selectedTypes, setSelectedTypes] = useState([]);
   const [maxPrice, setMaxPrice] = useState(6000);
   const [selectedBrand, setSelectedBrand] = useState('All');
@@ -77,13 +77,17 @@ export default function Cars() {
       // 4. Brand Match
       const matchesBrand = selectedBrand === 'All' || car.make === selectedBrand;
 
-      return matchesSearch && matchesType && matchesPrice && matchesBrand;
+      // 5. Location Match
+      const carLocation = car.location || 'Karachi';
+      const matchesLocation = selectedLocation === 'All Locations' || carLocation === selectedLocation;
+
+      return matchesSearch && matchesType && matchesPrice && matchesBrand && matchesLocation;
     }).sort((a, b) => {
       if (sortBy === 'price-asc') return a.pricePerDay - b.pricePerDay;
       if (sortBy === 'price-desc') return b.pricePerDay - a.pricePerDay;
       return 0;
     });
-  }, [cars, searchQuery, selectedTypes, maxPrice, selectedBrand, sortBy]);
+  }, [cars, searchQuery, selectedTypes, maxPrice, selectedBrand, selectedLocation, sortBy]);
 
   // Reset helper
   const resetFilters = () => {
@@ -91,7 +95,7 @@ export default function Cars() {
     setSelectedTypes([]);
     setMaxPrice(6000);
     setSelectedBrand('All');
-    setSelectedLocation('Mumbai');
+    setSelectedLocation('All Locations');
     setSortBy('price-asc');
   };
 
@@ -135,8 +139,10 @@ export default function Cars() {
               onChange={(e) => setSelectedLocation(e.target.value)}
               className="w-full bg-slate-900/60 border border-white/10 rounded-xl px-4 py-3 text-sm text-white appearance-none outline-none focus:border-purple-500/50 cursor-pointer"
             >
-              <option value="Mumbai" className="bg-slate-950 text-white">Mumbai</option>
-              <option value="Bangalore" className="bg-slate-950 text-white">Bangalore</option>
+              <option value="All Locations" className="bg-slate-950 text-white">All Locations</option>
+              <option value="Karachi" className="bg-slate-950 text-white">Karachi</option>
+              <option value="Lahore" className="bg-slate-950 text-white">Lahore</option>
+              <option value="Islamabad" className="bg-slate-950 text-white">Islamabad</option>
             </select>
             <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500 text-xs">▼</div>
           </div>
@@ -261,7 +267,7 @@ export default function Cars() {
         </div>
 
         {/* Results Counter / Reset triggers */}
-        {(searchQuery || selectedTypes.length > 0 || maxPrice < 6000 || selectedBrand !== 'All' || selectedLocation !== 'Mumbai') && (
+        {(searchQuery || selectedTypes.length > 0 || maxPrice < 6000 || selectedBrand !== 'All' || selectedLocation !== 'All Locations') && (
           <div className="flex justify-between items-center bg-purple-500/5 border border-purple-500/10 p-3.5 rounded-xl text-xs select-none">
             <span className="text-slate-400">
               Active filters displaying <strong className="text-white">{filteredAndSortedCars.length}</strong> vehicles.

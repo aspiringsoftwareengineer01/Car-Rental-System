@@ -37,7 +37,7 @@ export function useBookings() {
     }
 
     try {
-      // Live Supabase query
+      // Race Supabase fetch against a 6-second timeout so we never hang forever
       let query = supabase
         .from('bookings')
         .select(`
@@ -55,7 +55,12 @@ export function useBookings() {
         query = query.eq('user_email', user.email);
       }
 
-      const { data, error } = await query.order('created_at', { ascending: false });
+      const fetchPromise = query.order('created_at', { ascending: false });
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('Supabase bookings fetch timed out after 6s')), 6000)
+      );
+
+      const { data, error } = await Promise.race([fetchPromise, timeoutPromise]);
 
       if (error) throw error;
 
@@ -85,6 +90,7 @@ export function useBookings() {
       setLoading(false);
     }
   }, [user, isAdmin]);
+
 
   // Create booking operation
   const createBooking = async (bookingData) => {

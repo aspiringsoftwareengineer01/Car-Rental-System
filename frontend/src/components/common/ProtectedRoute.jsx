@@ -4,10 +4,12 @@ import { useAuth } from '../../context/AuthContext';
 import { IoCarSportOutline } from 'react-icons/io5';
 
 export default function ProtectedRoute({ children, adminOnly = false }) {
-  const { user, loading, isAdmin } = useAuth();
+  const { user, loading, sessionChecked, isAdmin } = useAuth();
   const location = useLocation();
 
-  if (loading) {
+  // Wait until the background Supabase session check is complete before deciding
+  // to redirect. This prevents a flash-redirect to /auth right after login.
+  if (!sessionChecked || loading) {
     return (
       <div className="min-h-screen bg-bg-deep flex flex-col items-center justify-center relative overflow-hidden">
         {/* Ambient background glows */}

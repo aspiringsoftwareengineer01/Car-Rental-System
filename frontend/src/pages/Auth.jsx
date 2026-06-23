@@ -5,14 +5,16 @@ import {
   IoMailOutline, 
   IoLogInOutline, 
   IoPersonAddOutline,
-  IoAlertCircleOutline
+  IoAlertCircleOutline,
+  IoEyeOutline,
+  IoEyeOffOutline
 } from 'react-icons/io5';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
-  const { signIn, signUp, loading: authLoading } = useAuth();
+  const { signIn, signUp, loading: authLoading, sessionChecked } = useAuth();
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,6 +23,7 @@ export default function Auth() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [localLoading, setLocalLoading] = useState(false);
   const [validationError, setValidationError] = useState('');
 
@@ -68,6 +71,11 @@ export default function Auth() {
             )
           );
           navigate(isAdminUser ? '/admin' : from, { replace: true });
+        } else {
+          // signIn already shows a toast, but show one here if result has error
+          if (result?.error && !result?.toastShown) {
+            toast.error(result.error || 'Invalid email or password. Please try again.');
+          }
         }
       } else {
         const result = await signUp(email, password, name);
@@ -86,16 +94,21 @@ export default function Auth() {
             navigate(isAdminUser ? '/admin' : from, { replace: true });
           } else {
             // Email confirmation required: switch to login tab, keep email for convenience, clear name/password
+            toast.success('Account created! Please check your email to confirm before logging in.');
             setIsLogin(true);
             setName('');
             setPassword('');
             setValidationError('');
           }
+        } else {
+          if (result?.error && !result?.toastShown) {
+            toast.error(result.error || 'Failed to create account. Please try again.');
+          }
         }
       }
     } catch (err) {
       console.error('Authentication Error:', err);
-      toast.error('An unexpected error occurred. Please try again.');
+      toast.error(err?.message || 'An unexpected error occurred. Please try again.');
     } finally {
       setLocalLoading(false);
     }
@@ -107,15 +120,29 @@ export default function Auth() {
     setName('');
     setEmail('');
     setPassword('');
+    setShowPassword(false);
   };
 
+  // Only block form during active auth operations (signIn/signUp),
+  // NOT during the background Supabase session init (sessionChecked)
   const isLoading = authLoading || localLoading;
+
+  // Show a subtle initializing indicator only while session is being checked
+  const isInitializing = !sessionChecked;
 
   return (
     <div className="w-full max-w-md card-glass p-8 rounded-2xl mx-auto my-12 relative overflow-hidden">
       {/* Accent gradients */}
       <div className="absolute top-0 right-0 w-32 h-32 bg-accent-cyan/10 rounded-full blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-32 h-32 bg-accent-purple/10 rounded-full blur-3xl"></div>
+
+      {/* Subtle session-check indicator - only shows very briefly on first load */}
+      {isInitializing && (
+        <div className="absolute top-3 right-3 flex items-center gap-1.5 text-[10px] text-text-muted animate-pulse">
+          <div className="w-1.5 h-1.5 rounded-full bg-accent-cyan animate-ping"></div>
+          <span>Connecting...</span>
+        </div>
+      )}
 
       <div className="text-center mb-8 relative">
         <h2 className="text-3xl font-extrabold tracking-tight mb-2">
@@ -165,14 +192,22 @@ export default function Auth() {
         <div className="relative">
           <IoLockClosedOutline className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted text-xl" />
           <input
-            type="password"
+            type={showPassword ? "text" : "password"}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             disabled={isLoading}
             required
-            className="w-full bg-bg-deep border border-border-light rounded-xl pl-12 pr-4 py-3 outline-none text-white focus:border-accent-cyan transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full bg-bg-deep border border-border-light rounded-xl pl-12 pr-12 py-3 outline-none text-white focus:border-accent-cyan transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-xl hover:text-white transition-colors focus:outline-none"
+            tabIndex="-1"
+          >
+            {showPassword ? <IoEyeOffOutline /> : <IoEyeOutline />}
+          </button>
         </div>
 
         <button 
